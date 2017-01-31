@@ -1,0 +1,114 @@
+.App {
+  text-align: center;
+}
+
+.App-logo {
+  animation: App-logo-spin infinite 20s linear;
+  height: 80px;
+}
+
+.App-header {
+  background-color: #222;
+  height: 150px;
+  padding: 20px;
+  color: white;
+}
+
+.App-intro {
+  font-size: large;
+}
+
+@keyframes App-logo-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.Game {
+  padding: 30px 20px 30px;
+}
+
+
+
+
+.Chessboard-container {
+    text-align: center;
+    display: flex;
+    margin: auto;
+}
+
+.Chessboard {
+    /* TODO: cleanup */
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+
+    &-row {
+        display: flex;
+    }
+
+    &.Chessboard-square {
+        display: flex;
+        width: 48px;
+        height: 48px;
+
+        &.black {
+            background-color: #006400;
+        }
+        &.white {
+            background-color: #eee;
+        }
+    }
+
+    &-piece {
+        color: black;
+        font-family: 'Smart Regular';
+        font-size: 34px;
+        cursor: pointer;
+        margin: auto;
+
+        &.dragging {
+            color: #aaa;
+        }
+
+        &.black {
+            color: black;
+        }
+    }
+
+    &-column-label-row {
+        display: flex;
+        margin-left: 40px;
+    }
+
+    &-row-label-square {
+        display: flex;
+        width: 35px;
+        height: 48px;
+    }
+
+    &-column-label-square {
+        display: flex;
+        width: 48px;
+        height: 30px;
+    }
+
+    &-column-label-text {
+        margin: auto;
+    }
+}
+
+.Chessboard-square {
+    display: flex;
+    width: 48px;
+    height: 48px;
+
+    &.black {
+        background-color: #006400;
+    }
+    &.white {
+        background-color: #eee;
+    }
+}

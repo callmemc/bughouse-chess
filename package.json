@@ -2,10 +2,20 @@
   "name": "bughouse-chess",
   "version": "0.0.1",
   "description": "bughouse chess app",
-  "main": "app.js",
+  "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "concurrently \"npm run server\" \"npm run client\"",
+    "server": "node server.js",
+    "client": "node start-client.js"
   },
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "chess.js": "^0.10.2",
+    "classnames": "^2.2.5",
+    "express": "^4.14.0"
+  },
+  "devDependencies": {
+    "concurrently": "^3.1.0"
+  }
 }
