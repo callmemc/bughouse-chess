@@ -4,10 +4,11 @@ import {bindActionCreators} from 'redux';
 // import Client from '../Client';
 import Chessboard from './Chessboard/Chessboard';
 import * as gameActions from '../actions/game';
+import _ from 'lodash-compat';
 
 // TODO: Load using redux
 // This is a container component?
-class Game extends Component {
+class Game extends Component {  
   // componentWillMount() {
   //   Client.getGame('123', (gameJson) => {
   //     console.log('gameJson', gameJson);
@@ -15,14 +16,10 @@ class Game extends Component {
   // }
 
   render() {
-    console.log(this.props.game.chess.fen());
-    // if (this.props.game.turn) {
-    //   console.log(this.props.game.turn);
-    //   // Problem: Need to listen to chessjs being loaded to rerender component
-    // }
     return (
       <div className="Game">
-        <Chessboard />
+        <Chessboard 
+          chess={_.get(this.props.game, 'chess')} />
       </div>
     );
   }

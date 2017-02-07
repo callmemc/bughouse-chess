@@ -1,4 +1,4 @@
-import Constants from '../constants/index';
+// import Constants from '../constants/index';
 import chessjs from 'chess.js';
 
 // am I supposed to use Immutable.js for state?
