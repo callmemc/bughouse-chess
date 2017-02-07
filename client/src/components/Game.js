@@ -2,9 +2,8 @@ import React, { Component } from 'react';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 // import Client from '../Client';
-import Chessboard from './Chessboard/Chessboard';
+import ChessGame from './ChessGame';
 import * as gameActions from '../actions/game';
-import _ from 'lodash-compat';
 
 // TODO: Load using redux
 // This is a container component?
@@ -18,8 +17,9 @@ class Game extends Component {
   render() {
     return (
       <div className="Game">
-        <Chessboard 
-          chess={_.get(this.props.game, 'chess')} />
+        <ChessGame 
+          actions={this.props.actions}
+          game={this.props.game} />
       </div>
     );
   }
@@ -31,11 +31,13 @@ function mapStateToProps(state, props) {
   };
 }
 
-function mapDispatchToProps() {
+function mapDispatchToProps(dispatch) {
   return {
-    actions: bindActionCreators(gameActions)
+    actions: bindActionCreators(gameActions, dispatch)
   };
 }
+
+// Redux stuffs
 export default connect(
   mapStateToProps,
   mapDispatchToProps

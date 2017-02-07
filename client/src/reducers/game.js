@@ -1,4 +1,4 @@
-// import Constants from '../constants/index';
+import Constants from '../constants/index';
 import chessjs from 'chess.js';
 
 // am I supposed to use Immutable.js for state?
@@ -13,11 +13,15 @@ const initialState = {
 export default function game(state = initialState, action) {
   switch (action.type) {
     // TODO
-    // case Constants.MAKE_MOVE:
-    //   return {
-    //     ...state,
-    //     [action.payload.name]: action.payload.value, // ? what i'm confused
-    //   };
+    case Constants.MAKE_MOVE:
+      state.chess.move({
+        from: action.fromSquare,
+        to: action.toSquare
+      });
+      return {
+        ...state
+        // [action.payload.name]: action.payload.value, // ? what i'm confused
+      };
     default:
       return state;
   }

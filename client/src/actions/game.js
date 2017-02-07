@@ -10,3 +10,12 @@ export function startMove({square, gameNum}) {
     },
   };
 }
+
+export function makeMove({fromSquare, toSquare}) {
+  console.log('MAKE MOVE: ', fromSquare, toSquare);
+  return {
+    type: Constants.MAKE_MOVE,   //necessary
+    fromSquare,
+    toSquare
+  };
+}

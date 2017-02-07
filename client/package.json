@@ -36,6 +36,7 @@
     "object-assign": "4.1.0",
     "path-exists": "2.1.0",
     "postcss-loader": "1.0.0",
+    "postcss-nested": "^1.0.0",
     "promise": "7.1.1",
     "react-dev-utils": "^0.4.2",
     "recursive-readdir": "2.1.0",
@@ -47,8 +48,7 @@
     "webpack-manifest-plugin": "1.1.0",
     "whatwg-fetch": "1.0.0"
   },
-  "dependencies": {
-    "postcss-nested": "^1.0.0",
+  "dependencies": {    
     "react": "^15.4.2",
     "react-dnd": "^2.1.4",
     "react-dom": "^15.4.2",
