@@ -10,39 +10,45 @@ const FILES = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'];
 
 class Chessboard extends Component {
   static propTypes = {
-    chess: PropTypes.object.isRequired // chessjs instance object
+    fen: PropTypes.string.isRequired,
+    makeMove: PropTypes.func.isRequired,
+    userColor: PropTypes.oneOf(['w', 'b'])
   };
 
 	render() {
-    const fen = this.props.chess.fen();
+    const { fen, userColor } = this.props;
+
+    // TODO: memoize this so not recalculated every time
+    const ranks = userColor === 'w' ? RANKS : RANKS.slice().reverse();
+    const files = userColor === 'w' ? FILES : FILES.slice().reverse();
 
     // TODO: this should be in the reducer, so not recalculated on 
     //  every render--instead, only recalculated when pieces change
+    // TODO: I think we can actually replace this with chess.board()
+    //  https://github.com/jhlywa/chess.js/blob/master/README.md#board
     const pieces = getPieces2DArray(fen);
 
-    return (
-      <div className="Chessboard-container">
-        <div className="Chessboard">
-          {_.map(RANKS, rank =>
-            <div className="Chessboard-row" key={rank}>
-              <div className="Chessboard-row-label-square">
-                <div className="Chessboard-column-label-text">
-                  {rank}
-                </div>
+    return (      
+      <div className="Chessboard">
+        {_.map(ranks, rank =>
+          <div className="Chessboard-row" key={rank}>
+            <div className="Chessboard-row-label-square">
+              <div className="Chessboard-column-label-text">
+                {rank}
               </div>
-              {_.map(FILES, file =>
-                <Square
-                  key={file}
-                  rank={rank}
-                  file={file}
-                  piece={pieces[rank-1][COLUMN_MAP[file]-1]} 
-                  makeMove={this.props.makeMove} />
-              )}
             </div>
-          )}
-          {this._renderFileLabels()}
-        </div>             
-      </div>
+            {_.map(files, file =>
+              <Square
+                key={file}
+                rank={rank}
+                file={file}
+                piece={pieces[rank-1][COLUMN_MAP[file]-1]} 
+                makeMove={this.props.makeMove} />
+            )}
+          </div>
+        )}
+        {this._renderFileLabels()}
+      </div>             
     );
 	}
 

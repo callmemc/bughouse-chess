@@ -4,6 +4,10 @@
 		"selected_items":
 		[
 			[
+				"get",
+				"getSmartFontPiece"
+			],
+			[
 				"emit",
 				"emitChange"
 			],
@@ -364,18 +368,37 @@
 	"buffers":
 	[
 		{
-			"file": "client/src/App.css",
+			"file": "client/src/actions/game.js",
 			"settings":
 			{
-				"buffer_size": 341,
+				"buffer_size": 532,
+				"encoding": "UTF-8",
 				"line_ending": "Unix"
 			}
 		},
 		{
-			"file": "client/src/Chessboard/Chessboard.js",
+			"file": "client/src/components/ChessGame.js",
 			"settings":
 			{
-				"buffer_size": 107,
+				"buffer_size": 865,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "client/src/components/Chessboard/Chessboard.js",
+			"settings":
+			{
+				"buffer_size": 1776,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "client/src/reducers/game.js",
+			"settings":
+			{
+				"buffer_size": 1821,
 				"encoding": "UTF-8",
 				"line_ending": "Unix"
 			}
@@ -462,19 +485,44 @@
 		"/Users/mchow/Projects/bughouse-chess",
 		"/Users/mchow/Projects/bughouse-chess/client",
 		"/Users/mchow/Projects/bughouse-chess/client/src",
-		"/Users/mchow/Projects/bughouse-chess/client/src/Chessboard"
+		"/Users/mchow/Projects/bughouse-chess/client/src/components",
+		"/Users/mchow/Projects/bughouse-chess/client/src/components/Chessboard"
 	],
 	"file_history":
 	[
+		"/Users/mchow/Projects/bughouse-chess/client/src/components/Sidebar.js",
+		"/Users/mchow/Projects/bughouse-chess/client/src/App.js",
+		"/Users/mchow/Projects/bughouse-chess/client/src/components/Game.js",
+		"/Users/mchow/Projects/bughouse-chess/client/src/reducers/index.js",
+		"/Users/mchow/Projects/bughouse-chess/client/src/components/ChessGame.js",
+		"/Users/mchow/Projects/bughouse-chess/client/src/index.js",
+		"/Users/mchow/Projects/bughouse-chess/client/src/components/Chessboard/Piece.js",
+		"/Users/mchow/Projects/bughouse-chess/client/src/components/Chessboard/Chessboard.js",
+		"/Users/mchow/Projects/bughouse-chess/client/src/components/Chessboard/Square.js",
+		"/Users/mchow/Projects/bughouse-chess/client/.gitignore",
+		"/Users/mchow/Projects/bughouse-chess/client/src/components/Chessboard/utils.js",
+		"/Users/mchow/Projects/bughouse-chess/client/src/reducers/game.js",
+		"/Users/mchow/Projects/bughouse-chess/client/src/constants/dndTypes.js",
+		"/Users/mchow/Projects/bughouse-chess/client/src/constants/index.js",
+		"/Users/mchow/Projects/bughouse-chess/client/package.json",
+		"/Users/mchow/Projects/bughouse-chess/client/src/components/Chessboard/ChessGame.js",
+		"/Users/mchow/Projects/bughouse-chess/client/src/index.css",
+		"/Users/mchow/Projects/bughouse-chess/client/src/components/Chessboard/Chessboard.css",
+		"/Users/mchow/Projects/bughouse-chess/client/config/webpack.config.dev.js",
+		"/Users/mchow/Projects/bughouse-chess/client/src/App.css",
+		"/Users/mchow/Projects/bughouse-chess/package.json",
+		"/Users/mchow/Projects/bughouse-chess/client/src/constants/ChessPieces.js",
+		"/Users/mchow/Projects/bughouse-chess/client/src/actions/game.js",
+		"/Users/mchow/Projects/bughouse-chess/client/src/stores/GameStore.js",
+		"/Users/mchow/Projects/bughouse-chess/client/src/Client.js",
+		"/Users/mchow/Projects/bughouse-chess/client/src/components/GamePage.js",
+		"/Users/mchow/Projects/bughouse-chess/client/src/Game.js",
+		"/Users/mchow/Projects/bughouse-chess/client/src/Chessboard/Chessboard.js",
+		"/Users/mchow/Projects/bughouse-chess/bughouse-chess.sublime-project",
 		"/Users/mchow/Projects/chess/src/components/ErrorPage/package.json",
 		"/etc/hosts",
-		"/Users/mchow/Projects/bughouse-chess/client/src/Client.js",
-		"/Users/mchow/Projects/bughouse-chess/client/src/Game.js",
-		"/Users/mchow/Projects/bughouse-chess/client/src/App.css",
 		"/Users/mchow/Projects/bughouse-chess/server.js",
 		"/Users/mchow/Projects/bughouse-chess/start-client.js",
-		"/Users/mchow/Projects/bughouse-chess/package.json",
-		"/Users/mchow/Projects/bughouse-chess/client/package.json",
 		"/Users/mchow/MatrixProjects/keymaker/lib/SFDCFlow.js",
 		"/Users/mchow/blt/app/204/patch/core/ui-idea2app-components/pom.xml",
 		"/Users/mchow/blt/app/204/patch/core/ui-idea2app-components/java/src/ui/idea2app/components/plugins/plugins-idea2app.xml",
@@ -569,41 +617,19 @@
 		"/Users/mchow/MatrixProjects/keymaker/src/js/admin/connectorConfigurations/utils.js",
 		"/Users/mchow/MatrixProjects/keymaker/src/js/admin/connectorConfigurations/detailsHeader.jsx",
 		"/Users/mchow/Library/Application Support/Sublime Text 3/Packages/User/Preferences.sublime-settings",
-		"/Users/mchow/MatrixProjects/keymaker/src/js/admin/connectorConfigurations/editModal.jsx",
-		"/Users/mchow/MatrixProjects/keymaker/src/js/admin/outputConnections/newModal.jsx",
-		"/Users/mchow/MatrixProjects/keymaker/test/html/stores/orchestrationStore.test.js",
-		"/Users/mchow/MatrixProjects/keymaker/test/html/stores/orchestrationStore/stateModifiers.test.js",
-		"/Users/mchow/MatrixProjects/keymaker/test/fixtures/orchestration/states.json",
-		"/Users/mchow/MatrixProjects/keymaker/test/fixtures/orchestration/twoStates.json",
-		"/Users/mchow/MatrixProjects/keymaker/app.js",
-		"/Users/mchow/MatrixProjects/keymaker/config/config.js",
-		"/Users/mchow/MatrixProjects/keymaker/src/js/admin/home.jsx",
-		"/Users/mchow/MatrixProjects/keymaker/src/js/admin/connectorConfigurations/list.jsx",
-		"/Users/mchow/MatrixProjects/keymaker/test/html/admin/connectorConfigurations/list.test.jsx",
-		"/Users/mchow/MatrixProjects/keymaker/src/js/cluster/homePage.jsx",
-		"/Users/mchow/MatrixProjects/keymaker/test/html/admin/home.test.jsx",
-		"/Users/mchow/MatrixProjects/keymaker/src/js/components/homeCard.jsx",
-		"/Users/mchow/MatrixProjects/keymaker/test/html/stores/connectionsStore.test.js",
-		"/Users/mchow/MatrixProjects/keymaker/src/js/admin/connectorConfigurations/details.jsx",
-		"/Users/mchow/MatrixProjects/keymaker/test/html/admin/connectorConfigurations/editModal.test.jsx",
-		"/Users/mchow/MatrixProjects/keymaker/test/html/admin/connectorConfigurations/editForm.test.jsx",
-		"/Users/mchow/MatrixProjects/keymaker/src/js/admin/connectorConfigurations/editForm.jsx",
-		"/Users/mchow/MatrixProjects/keymaker/test/fixtures/connectorConfigurations/currentConfiguration.json",
-		"/Users/mchow/MatrixProjects/keymaker/src/js/admin/connectorConfigurations/flux_actions.js",
-		"/Users/mchow/MatrixProjects/keymaker/src/js/clusterConstants.js",
-		"/Users/mchow/MatrixProjects/keymaker/test/html/stores/connectorConfigurationStore.test.js",
-		"/Users/mchow/MatrixProjects/keymaker/test/html/ajax/connectorConfiguration.test.js",
-		"/Users/mchow/MatrixProjects/keymaker/src/js/ajax/api/connectorConfigurations.js"
+		"/Users/mchow/MatrixProjects/keymaker/src/js/admin/connectorConfigurations/editModal.jsx"
 	],
 	"find":
 	{
-		"height": 23.0
+		"height": 35.0
 	},
 	"find_in_files":
 	{
 		"height": 93.0,
 		"where_history":
 		[
+			"/Users/mchow/Projects/bughouse-chess/client",
+			"/Users/mchow/Projects/bughouse-chess/client/src",
 			"-*/public/*,-*/node_modules/*,-*/dist/*",
 			"-*/public/*,-*/node_modules/*",
 			"/Users/mchow/MatrixProjects/keymaker",
@@ -619,6 +645,52 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"color",
+			"result",
+			"chess",
+			"pieceQueue",
+			"getsquare",
+			"dispatch",
+			"makemove",
+			"make",
+			"column_map",
+			"a",
+			"cx",
+			"getpieces2darray",
+			"_",
+			"Chessboard",
+			"INDEX.CSS",
+			"NESTED",
+			"postcss",
+			"css",
+			"react-dnd",
+			"COLUMN_MAP",
+			"ttf",
+			"css-loader",
+			"module",
+			"font-fam",
+			"col",
+			"row",
+			"col",
+			"this.props.col",
+			"row",
+			"ROWS",
+			"proptypes",
+			"postcss",
+			"autoprefixer",
+			"postcss",
+			"app.css",
+			"import app.css",
+			"index.css",
+			"loader",
+			"reactdom",
+			"squarecolor",
+			"people",
+			"GamePage",
+			"fen",
+			"es6",
+			"es2015",
+			"Game",
 			"todo",
 			"App",
 			"const",
@@ -700,53 +772,7 @@
 			"setlivemode",
 			"liveMode",
 			"liveMode = true",
-			"_pollinstances",
-			"set_metr",
-			"livemode",
-			"metricsstore",
-			"onlivemodeclick",
-			"livemode",
-			"currentmetrics",
-			"keyField",
-			"apiName",
-			"query",
-			"draft",
-			"this.draft",
-			"Instance_State_Id__c",
-			"ORCH_INSTANCE_STATE_ID_FIELD",
-			"instance_state_id",
-			"instanceDefinition",
-			"query",
-			"url",
-			"query",
-			"orchestrationapi",
-			"new orchestrationapi",
-			"query",
-			"req.query",
-			"this._getInstanceDefinition(...)",
-			"this.callout",
-			"ajax",
-			"fetchinstances",
-			"poller",
-			"livemode",
-			"trafficpanel",
-			"live",
-			"true",
-			"migrated",
-			"uipropstable",
-			"uiProperties",
-			"uiproperties",
-			"UIPropsTable",
-			"uiproperties",
-			"getuiproperties",
-			"render",
-			"panel",
-			"rendersidepanel",
-			"sidepanel",
-			"_setlivemode(",
-			"_setlivemode(fal",
-			"\"",
-			"catch (e"
+			"_pollinstances"
 		],
 		"highlight": true,
 		"in_selection": false,
@@ -797,54 +823,52 @@
 	"groups":
 	[
 		{
-			"selected": 1,
+			"selected": 2,
 			"sheets":
 			[
 				{
 					"buffer": 0,
-					"file": "client/src/App.css",
+					"file": "client/src/actions/game.js",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 341,
+						"buffer_size": 532,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								0,
-								0
+								215,
+								296
 							]
 						],
 						"settings":
 						{
-							"syntax": "Packages/LESS/LESS.tmLanguage",
-							"tab_size": 2,
-							"translate_tabs_to_spaces": true
+							"syntax": "Packages/Babel/JavaScript (Babel).sublime-syntax"
 						},
 						"translation.x": 0.0,
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 1,
+					"stack_index": 3,
 					"type": "text"
 				},
 				{
 					"buffer": 1,
-					"file": "client/src/Chessboard/Chessboard.js",
+					"file": "client/src/components/ChessGame.js",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 107,
+						"buffer_size": 865,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								107,
-								107
+								522,
+								522
 							]
 						],
 						"settings":
@@ -857,6 +881,73 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
+					"stack_index": 2,
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "client/src/components/Chessboard/Chessboard.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1776,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1136,
+								1136
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Babel/JavaScript (Babel).sublime-syntax",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 268.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"type": "text"
+				}
+			]
+		},
+		{
+			"selected": 0,
+			"sheets":
+			[
+				{
+					"buffer": 3,
+					"file": "client/src/reducers/game.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1821,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1655,
+								1655
+							]
+						],
+						"settings":
+						{
+							"history_list_is_closing": true,
+							"syntax": "Packages/Babel/JavaScript (Babel).sublime-syntax",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 253.0,
+						"zoom_level": 1.0
+					},
 					"stack_index": 0,
 					"type": "text"
 				}
@@ -865,7 +956,7 @@
 	],
 	"incremental_find":
 	{
-		"height": 23.0
+		"height": 34.0
 	},
 	"input":
 	{
@@ -880,11 +971,18 @@
 				0,
 				1,
 				1
+			],
+			[
+				1,
+				0,
+				2,
+				1
 			]
 		],
 		"cols":
 		[
 			0.0,
+			0.5,
 			1.0
 		],
 		"rows":
@@ -911,6 +1009,90 @@
 		"last_filter": "",
 		"selected_items":
 		[
+			[
+				"index.js",
+				"client/src/reducers/index.js"
+			],
+			[
+				"chessbo",
+				"client/src/components/Chessboard/Chessboard.js"
+			],
+			[
+				"game.js",
+				"client/src/components/Game.js"
+			],
+			[
+				"chessgame",
+				"client/src/components/ChessGame.js"
+			],
+			[
+				"app.j",
+				"client/src/App.js"
+			],
+			[
+				"game.j",
+				"client/src/components/ChessGame.js"
+			],
+			[
+				"app.js",
+				"client/src/App.js"
+			],
+			[
+				"giti",
+				"client/.gitignore"
+			],
+			[
+				"chessgame.j",
+				"client/src/components/ChessGame.js"
+			],
+			[
+				"pack",
+				"client/package.json"
+			],
+			[
+				"app",
+				"client/src/App.js"
+			],
+			[
+				"package",
+				"client/package.json"
+			],
+			[
+				"webpack",
+				"client/config/webpack.config.dev.js"
+			],
+			[
+				"web",
+				"client/config/webpack.config.dev.js"
+			],
+			[
+				"packag",
+				"client/package.json"
+			],
+			[
+				"game",
+				"client/src/reducers/game.js"
+			],
+			[
+				"app.",
+				"client/src/App.js"
+			],
+			[
+				"app.cs",
+				"client/src/App.css"
+			],
+			[
+				"chessboard",
+				"client/src/components/Chessboard/Chessboard.css"
+			],
+			[
+				"app.css",
+				"client/src/App.css"
+			],
+			[
+				"constants/in",
+				"client/src/constants/index.js"
+			],
 			[
 				"actions",
 				"src/actions/GameActions.js"
@@ -1224,10 +1406,6 @@
 				"src/js/orchestrations/orchestrationUtils.js"
 			],
 			[
-				"app.j",
-				"app.js"
-			],
-			[
 				"config/confi",
 				"config/config.js"
 			],
@@ -1342,86 +1520,6 @@
 			[
 				"errorstore.te",
 				"test/html/stores/errorStore.test.js"
-			],
-			[
-				"details.t",
-				"test/html/admin/connectorConfigurations/details.test.jsx"
-			],
-			[
-				"newmodal.",
-				"test/html/admin/outputConnections/newModal.test.jsx"
-			],
-			[
-				"errorsto",
-				"src/js/stores/ErrorStore.js"
-			],
-			[
-				"connectionssidebar",
-				"test/html/admin/connectorConfigurations/connectionSidebar.test.jsx"
-			],
-			[
-				"connectionside",
-				"src/js/admin/connectorConfigurations/connectionSidebar.jsx"
-			],
-			[
-				"errorstore",
-				"src/js/stores/ErrorStore.js"
-			],
-			[
-				"detailscona",
-				"src/js/admin/connectorConfigurations/detailsContainer.jsx"
-			],
-			[
-				"connectorconfiguration.test",
-				"test/html/ajax/connectorConfiguration.test.js"
-			],
-			[
-				"configurations/action",
-				"test/fixtures/connectorConfigurations/allActionTemplates.json"
-			],
-			[
-				"connectionsstore",
-				"src/js/stores/ConnectionsStore.js"
-			],
-			[
-				"datapipestorest",
-				"test/html/stores/dataPipeStore.test.js"
-			],
-			[
-				"datapipe/store",
-				"src/js/datapipes/js/store.js"
-			],
-			[
-				"datapipestore",
-				"src/js/datapipes/js/store.js"
-			],
-			[
-				"configurationstore.te",
-				"test/html/stores/connectorConfigurationStore.test.js"
-			],
-			[
-				"detail",
-				"src/js/admin/connectorConfigurations/details.jsx"
-			],
-			[
-				"newmoda",
-				"src/js/admin/outputConnections/newModal.jsx"
-			],
-			[
-				"newmodal.t",
-				"test/html/admin/outputConnections/newModal.test.jsx"
-			],
-			[
-				"api/connec",
-				"src/js/ajax/api/connectorConfigurations.js"
-			],
-			[
-				"clusterac",
-				"src/js/clusterActions.js"
-			],
-			[
-				"configuration.json",
-				"test/fixtures/connectorConfigurations/configuration.json"
 			]
 		],
 		"width": 0.0
@@ -1448,7 +1546,7 @@
 		],
 		"width": 492.0
 	},
-	"selected_group": 0,
+	"selected_group": 1,
 	"settings":
 	{
 	},
@@ -1456,7 +1554,7 @@
 	"show_open_files": false,
 	"show_tabs": true,
 	"side_bar_visible": true,
-	"side_bar_width": 122.0,
+	"side_bar_width": 173.0,
 	"status_bar_visible": true,
 	"template_settings":
 	{

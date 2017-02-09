@@ -4,6 +4,7 @@ import HTML5Backend from 'react-dnd-html5-backend';
 import _ from 'lodash-compat';
 
 import Chessboard from './Chessboard/Chessboard';
+import Sidebar from './Sidebar';
 
 
 /** 
@@ -17,15 +18,27 @@ class ChessGame extends Component {
   };
 
   render() {
-    return (
-      <div className="ChessGame">
-        <Chessboard 
-          chess={_.get(this.props.game, 'chess')}
-          makeMove={this.props.actions.makeMove}
-          startMove={this.props.actions.startMove} />
-        {/* TODO: Piece Queue */}    
-      </div>
-    );
+    const { actions, game } = this.props;
+    const userColor = game.get('userColor');
+
+    if (userColor) {
+      return (
+        <div className="ChessGame">
+          <Chessboard 
+            fen={game.get('fen')}
+            makeMove={actions.makeMove}
+            userColor={userColor} />
+          <Sidebar 
+            turn={game.get('turn')}
+            pieceReserve={game.get('pieceReserve')} 
+            userColor={userColor} />   
+        </div>
+      );
+    } else {
+      return (
+        <div className="ChessGame">Loading...</div>
+      );
+    }
   }
 }
 

@@ -1,8 +1,8 @@
 import React, { PropTypes, Component } from 'react';
 import { DropTarget } from 'react-dnd';
 
-import { COLUMN_MAP } from './utils';
 import Piece from './Piece';
+import { COLUMN_MAP } from './utils';
 import { ItemTypes } from '../../constants/dndTypes';
 
 const squareTarget = {
@@ -12,10 +12,13 @@ const squareTarget = {
 
   drop: (props, monitor, component) => {    
     const item = monitor.getItem();
-    const fromSquare = item.square;
 
-    const toSquare = props.file + props.rank;
-    props.makeMove({fromSquare: fromSquare, toSquare: toSquare});        
+    props.makeMove({ 
+      fromSquare: item.square, 
+      toSquare: props.file + props.rank, 
+      color: item.color,
+      piece: item.piece
+    });        
   }
 };
 
@@ -45,21 +48,14 @@ class Square extends Component {
             <div className={`Chessboard-square ${squareColor}`}>
               <Piece 
                 piece={this.props.piece} 
-                square={this.props.file + this.props.rank}/>
+                square={this._getBoardSquare()}/>
           </div>
         </div>
       )
     );
-  }      
+  }
 
-  // handle drop
-  // GameActions.makeMove({
-  //     square: this._getSquare(),
-  //     gameNum: this.props.gameNum,
-  //     takenPiece: this.props.piece
-  // });
-
-  _getSquare() {
+  _getBoardSquare() {
     return this.props.file + this.props.rank;
   }
 }

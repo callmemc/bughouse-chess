@@ -24,6 +24,7 @@ export function getSmartFontPiece(fenPiece) {
   return ChessPieces[fenPiece];
 }
 
+// TODO: remove in favor of chess game
 export function getPieces2DArray(fen) {
   const rankArray = fen.split(' ')[0].split('/');
 
@@ -31,6 +32,14 @@ export function getPieces2DArray(fen) {
     rank.replace(/\d/g, count => _.repeat('-', Number(count)))
       .split('')
   );
+}
+
+export function getOpposingColor(color) {
+  return color === 'w' ? 'b' : 'w';
+}
+
+export function getChessJsPiece(piece, color) {
+  return color === 'w' ? piece.toUpperCase() : piece;
 }
 
 // TODO: find a better way to do this...

@@ -1,5 +1,5 @@
 /* I think I'll just go with BEM naming conventions for now? */
-.Chessboard-container {    
+.ChessGame {    
     display: flex;
     justify-content: center;    // temp
     margin: auto;
@@ -65,17 +65,11 @@
 
 .Sidebar {
     margin-left: 10px;
-    border: 1px solid black;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
 
-    &-player-control {
-
-    }
-
     &-piece-queue {
-        border: 1px solid red;
         display: flex;
         max-width: 100px;
     }
@@ -85,6 +79,10 @@
         font-size: 34px;
         cursor: pointer;
     }
+}
+
+.Clock {
+    
 }
 
 @font-face {

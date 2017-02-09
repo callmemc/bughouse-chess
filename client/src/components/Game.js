@@ -1,19 +1,12 @@
 import React, { Component } from 'react';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
-// import Client from '../Client';
+
 import ChessGame from './ChessGame';
 import * as gameActions from '../actions/game';
 
-// TODO: Load using redux
-// This is a container component?
+// This is a container component for the game reducer?
 class Game extends Component {  
-  // componentWillMount() {
-  //   Client.getGame('123', (gameJson) => {
-  //     console.log('gameJson', gameJson);
-  //   });
-  // }
-
   render() {
     return (
       <div className="Game">
@@ -27,7 +20,7 @@ class Game extends Component {
 
 function mapStateToProps(state, props) {
   return {
-    game: state.game
+    game: state.get('game')
   };
 }
 

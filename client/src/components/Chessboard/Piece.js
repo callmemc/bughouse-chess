@@ -9,7 +9,9 @@ const pieceSource = {
   beginDrag: (props) => {
     // Return the data describing the dragged item
     return {
-      square: props.square
+      color: props.color,   // not required?
+      piece: props.piece,
+      square: props.square  // NOT required
     };
   }
 };
@@ -24,7 +26,9 @@ function collect(connect, monitor) {
 // TODO: piece needs an identifier?
 class Piece extends Component {
   static propTypes = {
+    color: PropTypes.string,
     piece: PropTypes.string.isRequired,
+    square: PropTypes.string,   // If not there, then it's in the pieceReserve
 
     // The following props are injected by React DnD, as defined by the 'collect' function
     // connectDragPreview: PropTypes.func.isRequired,
@@ -46,10 +50,5 @@ class Piece extends Component {
     );
   }
 }
-
-// GameActions.startMove({
-//     square: this._getSquare(),
-//     gameNum: this.props.gameNum
-// });
 
 export default DragSource(ItemTypes.PIECE, pieceSource, collect)(Piece);
