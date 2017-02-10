@@ -10,6 +10,7 @@ const FILES = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'];
 
 class Chessboard extends Component {
   static propTypes = {
+    dropMove: PropTypes.func.isRequired,
     fen: PropTypes.string.isRequired,
     makeMove: PropTypes.func.isRequired,
     userColor: PropTypes.oneOf(['w', 'b'])
@@ -43,6 +44,7 @@ class Chessboard extends Component {
                 rank={rank}
                 file={file}
                 piece={pieces[rank-1][COLUMN_MAP[file]-1]} 
+                dropMove={this.props.dropMove}
                 makeMove={this.props.makeMove} />
             )}
           </div>

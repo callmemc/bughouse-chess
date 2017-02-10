@@ -50,65 +50,82 @@ socket.on('update game', (data) => {
 });
 
 // Send move to server
-function makeMove(board, fen, pieceReserve) {
+function makeMove({board, fen, pieceReserveBoard, pieceReserve, pieceReserveColor}) {
   socket.emit('move', {
     board,
     fen,
-    pieceReserve: pieceReserve.toJS()
+    pieceReserveBoard, 
+    pieceReserveColor,
+    pieceReserve: pieceReserve ? pieceReserve.toJS() : undefined
   });  
 }
-
-
 
 export default function game(state = initialState, action) {
   const { fromSquare, toSquare, color, piece } = action;
   const board = state.getIn(['user', 'board']);
+  const otherBoard = getOtherBoard(board);
   const chess = chessArray[board];  // The user's chess instance
+  let updatedPieceReserveBoard, updatedPieceReserveColor, updatedPieceReserve, moveResult;
 
-  switch (action.type) {    
-    case Constants.MAKE_MOVE:            
-      // Standard move
-      if (fromSquare) {        
-        const moveResult = chess.move({ from: fromSquare, to: toSquare });
-
-        if (moveResult) {   // chess.move() returns null if move was invalid
-          const { captured, color } = moveResult;
-
-          if (captured) {
-            // Add piece to partner's reserve
-            const reservePieceColor = getOpposingColor(color);
-            const reservePiece = getChessJsPiece(captured, reservePieceColor);
-            state = state.updateIn(['boards', getOtherBoard(board), 'pieceReserve', getOpposingColor(color)], 
-              list => list.push(reservePiece));            
-          }
-        }
-      // Drop move
-      } else {
-        // If the piece dropped is not the current turn's color, return
-        // TODO: check if the piece dropped is valid-- not last/first row && not on top of other piece
-        if (color !== chess.turn()) {
-          return state;
-        }
-
-        const moveResult = chess.put({ type: piece, color }, toSquare);
-        if (moveResult) {
-          
-          // Remove piece from reserve
-          const pieceIndex = state.getIn(['boards', board, 'pieceReserve', color]).findIndex(p => p === piece);
-          state = state.updateIn(['boards', board, 'pieceReserve', color], 
-              list => list.delete(pieceIndex));
-
-          // Force next turn
-          // TODO: move this to chess object?
-          const tokens = chess.fen().split(' ');
-          tokens[1] = (tokens[1] === 'w') ? 'b' : 'w';
-          chess.load(tokens.join(' '));
-        }        
+  switch (action.type) {
+    case Constants.DROP_MOVE: 
+      // If the piece dropped is not the current turn's color, return
+      // TODO: check if the piece dropped is valid-- not last/first row && not on top of other piece
+      if (color !== chess.turn()) {
+        return state;
       }
 
-      const pieceReserve = state.getIn(['boards', board, 'pieceReserve']);
-      makeMove(board, chess.fen(), pieceReserve);
+      moveResult = chess.put({ type: piece, color }, toSquare);
+      if (moveResult) {
+        
+        // Remove piece from reserve
+        const pieceIndex = state.getIn(['boards', board, 'pieceReserve', color]).findIndex(p => p === piece);
+        updatedPieceReserve = state.getIn(['boards', board, 'pieceReserve', color])
+            .delete(pieceIndex);
+        updatedPieceReserveBoard = board;
+        updatedPieceReserveColor = color;
 
+        // Force next turn
+        // TODO: move this to chess object?
+        const tokens = chess.fen().split(' ');
+        tokens[1] = (tokens[1] === 'w') ? 'b' : 'w';
+        chess.load(tokens.join(' '));
+
+        makeMove({
+          board, 
+          fen: chess.fen(), 
+          pieceReserve: updatedPieceReserve,
+          pieceReserveBoard: updatedPieceReserveBoard, 
+          pieceReserveColor: updatedPieceReserveColor
+        });        
+      }  
+      return state;
+    case Constants.MAKE_MOVE:            
+      // Standard move
+      moveResult = chess.move({ from: fromSquare, to: toSquare });
+
+      if (moveResult) {   // chess.move() returns null if move was invalid
+        const { captured, color } = moveResult;
+
+        if (captured) {
+          // Add piece to partner's reserve
+          const reservePieceColor = getOpposingColor(color);
+          const reservePiece = getChessJsPiece(captured, reservePieceColor);
+          updatedPieceReserve = state.getIn(['boards', otherBoard, 'pieceReserve', reservePieceColor])
+            .push(reservePiece);  
+          updatedPieceReserveBoard = otherBoard;
+          updatedPieceReserveColor = reservePieceColor;          
+        }
+
+        makeMove({
+          board, 
+          fen: chess.fen(), 
+          pieceReserve: updatedPieceReserve,
+          pieceReserveBoard: updatedPieceReserveBoard,
+          pieceReserveColor: updatedPieceReserveColor
+        });
+      }
+      
       return state;
     case Constants.JOIN_GAME:
       console.log('JOIN GAME as', action.board, action.color);
@@ -117,9 +134,13 @@ export default function game(state = initialState, action) {
         color: action.color
       }));
     case Constants.UPDATE_GAME:
+      console.log('update game', action);
       chessArray[action.board].load(action.fen);
-      state = state.setIn(['boards', action.board, 'pieceReserve'], 
-        Immutable.fromJS(action.pieceReserve));
+
+      if (action.pieceReserve) {
+        state = state.setIn(['boards', action.pieceReserveBoard, 'pieceReserve', action.pieceReserveColor], 
+          Immutable.fromJS(action.pieceReserve));
+      }
       return state.mergeIn(['boards', action.board], getUpdatedGameState(action.board));
     default:
       return state;

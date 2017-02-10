@@ -12,13 +12,20 @@ const squareTarget = {
 
   drop: (props, monitor, component) => {    
     const item = monitor.getItem();
+    const toSquare = props.file + props.rank;
 
-    props.makeMove({ 
-      fromSquare: item.square, 
-      toSquare: props.file + props.rank, 
-      color: item.color,
-      piece: item.piece
-    });        
+    if (item.square) {
+      props.makeMove({ 
+        fromSquare: item.square, 
+        toSquare
+      });        
+    } else {
+      props.dropMove({  
+        toSquare, 
+        color: item.color,
+        piece: item.piece
+      });  
+    }
   }
 };
 

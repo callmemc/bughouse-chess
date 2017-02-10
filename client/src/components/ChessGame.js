@@ -24,6 +24,7 @@ class ChessGame extends Component {
       <div className="ChessGame">
         <Chessboard 
           fen={board.get('fen')}
+          dropMove={actions.dropMove}
           makeMove={actions.makeMove}
           userColor={userColor} />
         <Sidebar 
