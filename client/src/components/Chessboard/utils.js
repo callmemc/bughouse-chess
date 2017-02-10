@@ -38,6 +38,10 @@ export function getOpposingColor(color) {
   return color === 'w' ? 'b' : 'w';
 }
 
+export function getOtherBoard(board) {
+  return board === 1 ? 0 : 1;
+}
+
 export function getChessJsPiece(piece, color) {
   return color === 'w' ? piece.toUpperCase() : piece;
 }

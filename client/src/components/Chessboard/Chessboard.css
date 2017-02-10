@@ -29,8 +29,9 @@
         color: black;
         font-family: 'Smart Regular';
         font-size: 34px;
-        cursor: pointer;
         margin: auto;
+
+        cursor: pointer;
 
         &.dragging {
             color: #aaa;

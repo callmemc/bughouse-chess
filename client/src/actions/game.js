@@ -9,10 +9,10 @@ export function makeMove(payload) {
   };
 }
 
-export function joinGame(userColor) {
+export function joinGame(payload) {
   return {
     type: Constants.JOIN_GAME,
-    userColor
+    ...payload
   };
 }
 

@@ -14,31 +14,24 @@ import Sidebar from './Sidebar';
  */
 class ChessGame extends Component {  
   static propTypes = {
-    game: PropTypes.object.isRequired
+    board: PropTypes.object.isRequired
   };
 
   render() {
-    const { actions, game } = this.props;
-    const userColor = game.get('userColor');
+    const { actions, board, userColor } = this.props;
 
-    if (userColor) {
-      return (
-        <div className="ChessGame">
-          <Chessboard 
-            fen={game.get('fen')}
-            makeMove={actions.makeMove}
-            userColor={userColor} />
-          <Sidebar 
-            turn={game.get('turn')}
-            pieceReserve={game.get('pieceReserve')} 
-            userColor={userColor} />   
-        </div>
-      );
-    } else {
-      return (
-        <div className="ChessGame">Loading...</div>
-      );
-    }
+    return (
+      <div className="ChessGame">
+        <Chessboard 
+          fen={board.get('fen')}
+          makeMove={actions.makeMove}
+          userColor={userColor} />
+        <Sidebar 
+          turn={board.get('turn')}
+          pieceReserve={board.get('pieceReserve')} 
+          userColor={userColor} />   
+      </div>
+    );
   }
 }
 

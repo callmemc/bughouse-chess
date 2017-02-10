@@ -7,7 +7,7 @@ class App extends Component {
     return (
       <div className="App">
         <div className="App-header">
-          <h2>Bughouse Chess!</h2>
+          <h2>Chowhouse</h2>
         </div>        
         <Game />
       </div>

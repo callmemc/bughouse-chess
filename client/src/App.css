@@ -25,4 +25,12 @@
 
 .Game {
   padding: 30px 20px 30px;
+  display: flex;
+  justify-content: space-around;
+
+  &--other {
+    pointer-events: none;
+    user-select: none;
+    transform: scale(0.7);
+  }
 }
