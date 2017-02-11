@@ -6,9 +6,6 @@ var io = require('socket.io')(http);
 
 app.set('port', (process.env.PORT || 3001));
 
-// TEMP IN MEMORY SUPER HACKY "DATABASE"
-var users = [{}, {}];
-
 app.get('/api/game/:gameId', function (req, res) {
   const MOCK_RESPONSE = {
     gameId: 'test123'
@@ -24,8 +21,8 @@ var userOptions = [
 	{board: 1, color: 'b'}
 ]; 
 
-	// [0, 'b'], [1, 'w'], [1, 'b']];
-
+// TEMP IN MEMORY SUPER HACKY "DATABASE"
+var players = [{}, {}];
 
 io.on('connection', function(socket) {
 	var myUser;
@@ -35,16 +32,23 @@ io.on('connection', function(socket) {
 	// Assign user to a board number and color, with the first board
 	//  and white taking priority
 	userOptions.some(user => {
-		if (!users[user.board][user.color]) {
-			users[user.board][user.color] = userId;
+		if (!players[user.board][user.color]) {
+			players[user.board][user.color] = userId;
 			myUser = user;
-			socket.emit('join game', user);
-			console.log('joined game:', userId, user); 
+
+			// User join event
+			socket.emit('join user', user);			
+			console.log('join user:', userId, user); 
+
+			// Any player join event
+			io.emit('update players', { players });
+			console.log('update players:', players);
+
 			return true;
 		}
-	});
-	console.log(users);
+	});	
 
+	// Broadcast
 	socket.on('move', (data) => {
 		console.log('MOVE:', data);
 		io.emit('update game', data);
@@ -52,9 +56,10 @@ io.on('connection', function(socket) {
 
 	socket.on('disconnect', () => {
 		if (myUser) {
-			delete users[myUser.board][myUser.color];
+			delete players[myUser.board][myUser.color];
+			io.emit('update players', { players });
 			console.log('user disconnected', socket.id);
-			console.log(users);
+			console.log(players);
 		}
   });
 });

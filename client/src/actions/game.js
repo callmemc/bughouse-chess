@@ -16,16 +16,23 @@ export function makeMove(payload) {
   };
 }
 
-export function joinGame(payload) {
+export function updateGame(payload) {
   return {
-    type: Constants.JOIN_GAME,
+    type: Constants.UPDATE_GAME,
     ...payload
   };
 }
 
-export function updateGame(payload) {
+export function updatePlayers(payload) {
   return {
-    type: Constants.UPDATE_GAME,
+    type: Constants.UPDATE_PLAYERS,
+    ...payload
+  };
+}
+
+export function joinUser(payload) {
+  return {
+    type: Constants.JOIN_USER,
     ...payload
   };
 }

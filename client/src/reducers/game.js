@@ -1,12 +1,10 @@
 import chessjs from 'chess.js';
 import Immutable from 'immutable';
-import io from 'socket.io-client';
 
 import Constants from '../constants';
 import { getOpposingColor, getOtherBoard, getChessJsPiece } 
   from '../components/Chessboard/utils';
-import store from '../store';
-import { joinGame, updateGame } from '../actions/game';
+import socket from '../socket';
 
 // chessjs instance objects
 const chessArray = [
@@ -34,22 +32,12 @@ const initialState = Immutable.fromJS({
       turn: chessArray[1].turn(), 
     }
   ],
-  user: undefined         // If undefined, user is a spectator
+  user: undefined,    // If undefined, user is a spectator
+  players: [{}, {}]         // Players of the game     
 });
 
-// TODO: Move this under a JOIN action
-// https://exec64.co.uk/blog/websockets_with_redux/
-const socket = io();
 
-socket.on('join game', (data) => {
-  store.dispatch(joinGame(data));
-});
-
-socket.on('update game', (data) => {
-  store.dispatch(updateGame(data));
-});
-
-// Send move to server
+// Send move to socket server so that it can be broadcasted to other users
 function makeMove({board, fen, pieceReserveBoard, pieceReserve, pieceReserveColor}) {
   socket.emit('move', {
     board,
@@ -126,13 +114,14 @@ export default function game(state = initialState, action) {
         });
       }
       
-      return state;
-    case Constants.JOIN_GAME:
-      console.log('JOIN GAME as', action.board, action.color);
-      return state.set('user', Immutable.Map({
-        board: action.board,
-        color: action.color
-      }));
+      return state;    
+
+    // TODO: Should all the logic go from MAKE_MOVE/DROP_MOVE into UPDATE_GAME? Therefore
+    //  we're not passing around the fen, which is unreliable and can get out of sync
+    //   Instead, we're only emitting and broadcasting moves, and it's the client's job
+    //   to update their chess.js object and therefore the fen?
+    //  Later, the server should store the fen?
+    //  Why not store the chessjs object in memory?
     case Constants.UPDATE_GAME:
       console.log('update game', action);
       chessArray[action.board].load(action.fen);
@@ -142,6 +131,17 @@ export default function game(state = initialState, action) {
           Immutable.fromJS(action.pieceReserve));
       }
       return state.mergeIn(['boards', action.board], getUpdatedGameState(action.board));
+
+    // TODO: move all the user info to a separate reducer?
+    case Constants.JOIN_USER:
+      console.log('JOIN USER as', action.board, action.color);
+      return state.set('user', Immutable.Map({
+        board: action.board,
+        color: action.color
+      }));
+
+    case Constants.UPDATE_PLAYERS:
+      return state.set('players', Immutable.fromJS(action.players));
     default:
       return state;
   }

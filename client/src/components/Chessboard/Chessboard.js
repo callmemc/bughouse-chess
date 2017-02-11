@@ -43,9 +43,10 @@ class Chessboard extends Component {
                 key={file}
                 rank={rank}
                 file={file}
-                piece={pieces[rank-1][COLUMN_MAP[file]-1]} 
+                piece={pieces[rank-1][COLUMN_MAP[file]-1]}                 
                 dropMove={this.props.dropMove}
-                makeMove={this.props.makeMove} />
+                makeMove={this.props.makeMove}
+                userColor={userColor} />
             )}
           </div>
         )}

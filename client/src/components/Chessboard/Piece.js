@@ -1,7 +1,7 @@
 import React, { PropTypes, Component } from 'react';
 import { DragSource } from 'react-dnd';
 import cx from 'classnames';
-import { getSmartFontPiece } from './utils';
+import { getSmartFontPiece, getPieceColor } from './utils';
 import { ItemTypes } from '../../constants/dndTypes';
 
 // Specifies the drag source contract.
@@ -9,15 +9,21 @@ const pieceSource = {
   beginDrag: (props) => {
     // Return the data describing the dragged item
     return {
-      color: props.color,   // not required?
+      color: getPieceColor(props.piece),
       piece: props.piece,
       square: props.square  // NOT required
     };
+  },
+
+  canDrag: (props) => {
+    console.log(getPieceColor(props.piece), props.userColor);
+    return getPieceColor(props.piece) === props.userColor;
   }
 };
 
 function collect(connect, monitor) {
   return {
+    canDrag: monitor.isDragging(),
     connectDragSource: connect.dragSource(),
     isDragging: monitor.isDragging()
   };
@@ -37,13 +43,16 @@ class Piece extends Component {
   };
 
   render() {
+    const { isDragging, connectDragSource } = this.props;
+
+    const opacity = isDragging ? 0 : 1;
     return (
-      this.props.connectDragSource(
+      connectDragSource(        
         <div className={cx({
-            "Chessboard-piece": true,
-            "dragging": this.props.isDragging
+            "Piece": true,
+            "Piece--dragging": isDragging
           })}
-          draggable="true">
+          style={{ opacity }}>
           {getSmartFontPiece(this.props.piece)}
         </div>
       )

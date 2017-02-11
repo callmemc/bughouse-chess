@@ -24,6 +24,14 @@ export function getSmartFontPiece(fenPiece) {
   return ChessPieces[fenPiece];
 }
 
+export function getChessJsPiece(piece, color) {
+  return color === 'w' ? piece.toUpperCase() : piece;
+}
+
+export function getPieceColor(piece) {
+  return piece === piece.toUpperCase() ? 'w' : 'b';
+}
+
 // TODO: remove in favor of chess game
 export function getPieces2DArray(fen) {
   const rankArray = fen.split(' ')[0].split('/');
@@ -42,8 +50,14 @@ export function getOtherBoard(board) {
   return board === 1 ? 0 : 1;
 }
 
-export function getChessJsPiece(piece, color) {
-  return color === 'w' ? piece.toUpperCase() : piece;
+export function getTeam(board, color) {
+  if ((board === 0 && color === 'w') || (board === 1 && color === 'b')) {
+    return 1;
+  } else if ((board === 0 && color === 'b') || (board === 1 && color === 'w')) {
+    return 2;
+  } else {
+    return undefined;
+  }
 }
 
 // TODO: find a better way to do this...

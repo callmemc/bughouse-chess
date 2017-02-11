@@ -10,27 +10,32 @@ import { getOpposingColor, getOtherBoard } from './Chessboard/utils';
 class Game extends Component {  
   render() {
     const { actions, game } = this.props;
-    const userBoard = game.getIn(['user', 'board']);
-    const otherBoard = getOtherBoard(userBoard);
-    const user = game.get('user');
+    const user = game.get('user');        
+    const players = game.get('players');
 
     if (user) {
+      const userBoard = user.get('board');
+      const otherBoard = getOtherBoard(userBoard);
+
       return (
         <div className="Game">
-          <div className="Game--user">
+          <div className="Game--user">            
             <ChessGame 
               actions={actions}
               board={game.getIn(['boards', userBoard])}
-              userColor={user.get('color')} />
-            <div>Game {userBoard + 1}</div>
+              boardNum={userBoard}
+              isUserBoard={true}
+              players={players.get(userBoard)}
+              userColor={user.get('color')} />            
           </div>
 
           <div className="Game--other">
             <ChessGame 
               actions={actions}
               board={game.getIn(['boards', otherBoard])}
-              userColor={getOpposingColor(user.get('color'))} />
-            <div>Game {otherBoard + 1}</div>
+              boardNum={otherBoard}
+              players={players.get(otherBoard)}
+              userColor={getOpposingColor(user.get('color'))} />            
           </div>
         </div>
       );

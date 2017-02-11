@@ -2,9 +2,13 @@ import React, { PropTypes, Component } from 'react';
 import { DragDropContext } from 'react-dnd';
 import HTML5Backend from 'react-dnd-html5-backend';
 import _ from 'lodash-compat';
+import { Map } from 'immutable';
 
 import Chessboard from './Chessboard/Chessboard';
+import PieceDragLayer from './Chessboard/PieceDragLayer';
 import Sidebar from './Sidebar';
+import PieceReserve from './PieceReserve';
+import { getOpposingColor } from './Chessboard/utils';
 
 
 /** 
@@ -14,25 +18,46 @@ import Sidebar from './Sidebar';
  */
 class ChessGame extends Component {  
   static propTypes = {
-    board: PropTypes.object.isRequired
+    board: PropTypes.object.isRequired,
+    boardNum: PropTypes.number.isRequired,
+    players: PropTypes.instanceOf(Map)
   };
 
   render() {
-    const { actions, board, userColor } = this.props;
+    const { actions, board, boardNum, players, userColor } = this.props;
+    const pieceReserve = board.get('pieceReserve');
+    const otherColor = getOpposingColor(userColor);
 
     return (
       <div className="ChessGame">
-        <Chessboard 
-          fen={board.get('fen')}
-          dropMove={actions.dropMove}
-          makeMove={actions.makeMove}
-          userColor={userColor} />
-        <Sidebar 
+        <div className="ChessGame__play-area">          
+          <PieceReserve 
+            queue={pieceReserve.get(otherColor)}
+            userColor={userColor} />        
+          <Chessboard 
+            fen={board.get('fen')}
+            dropMove={actions.dropMove}
+            makeMove={actions.makeMove}
+            userColor={userColor} />
+          <PieceReserve 
+            queue={pieceReserve.get(userColor)}
+            userColor={userColor} />                            
+        </div>
+        <Sidebar
+          boardNum={boardNum}
+          players={players}
           turn={board.get('turn')}
-          pieceReserve={board.get('pieceReserve')} 
-          userColor={userColor} />   
+          userColor={userColor} />
       </div>
     );
+  }
+
+  // This isn't working for some reason...
+  _renderDragLayer() {
+    if (this.props.isUserBoard) {
+      return <PieceDragLayer
+          piece="K" />;
+    }
   }
 }
 

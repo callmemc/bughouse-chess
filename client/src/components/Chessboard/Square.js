@@ -55,7 +55,8 @@ class Square extends Component {
             <div className={`Chessboard-square ${squareColor}`}>
               <Piece 
                 piece={this.props.piece} 
-                square={this._getBoardSquare()}/>
+                square={this._getBoardSquare()}
+                userColor={this.props.userColor} />
           </div>
         </div>
       )
