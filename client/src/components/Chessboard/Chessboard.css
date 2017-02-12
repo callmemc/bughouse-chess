@@ -18,10 +18,18 @@
         width: 48px;
         height: 48px;
 
-        &.black {
-            background-color: #006400;
+        &--0 {
+            &.dark {
+                background-color: #608060;
+            }
         }
-        &.white {
+
+        &--1 {
+            &.dark {
+                background-color: #917156;
+            }
+        }
+        &.light {
             background-color: #eee;
         }
     }    
@@ -104,6 +112,7 @@
     padding: 0 5px;
     border: 1px solid black;
     height: 40px;
+    width: 80px;
 }
 
 .Player {
@@ -113,11 +122,11 @@
     color: white;
 
     &--team-1 {
-        background-color: red;
+        background-color: #bb0c0c;
     }
 
     &--team-2 {
-        background-color: blue;
+        background-color: #173fad;
     }
 }
 

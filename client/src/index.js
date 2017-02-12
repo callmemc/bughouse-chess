@@ -1,23 +1,22 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-// import { createStore } from 'redux';
 import { Provider } from 'react-redux';
-// import { Map } from 'immutable';
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import injectTapEventPlugin from 'react-tap-event-plugin';
 
 import App from './App';
 import './index.css';
 import store from './store';
-// import rootReducer from './reducers';
-
-// See http://redux.js.org/docs/basics/ExampleTodoList.html
-// TODO: move this into separate store/configureStore.js file?
-// const initialState = Map();
-// const store = createStore(rootReducer, initialState);
-
 
 ReactDOM.render(
-  <Provider store={store}>
-    <App />
-  </Provider>,
+  <MuiThemeProvider>
+    <Provider store={store}>
+      <App />
+    </Provider>
+  </MuiThemeProvider>,
   document.getElementById('root')
 );
+
+
+// See https://www.npmjs.com/package/material-ui#react-tap-event-plugin
+injectTapEventPlugin();

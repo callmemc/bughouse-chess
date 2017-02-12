@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
+import Dialog from 'material-ui/Dialog';
 
 import ChessGame from './ChessGame';
 import * as gameActions from '../actions/game';
 import { getOpposingColor, getOtherBoard } from './Chessboard/utils';
 
-// This is a container component for the game reducer?
 class Game extends Component {  
   render() {
     const { actions, game } = this.props;
@@ -37,14 +37,32 @@ class Game extends Component {
               players={players.get(otherBoard)}
               userColor={getOpposingColor(user.get('color'))} />            
           </div>
+
+          {this._renderDialog()}
         </div>
       );
     } else {
       return <div>Loading...</div>;
     }
   }
+
+  _renderDialog() {
+    return (
+      <Dialog open={!this._isGameReady()}
+        contentStyle={{maxWidth: '400px'}}>
+        Waiting for all players to join game...
+      </Dialog>
+    );
+  }
+
+  _isGameReady() {
+    const players = this.props.game.get('players');
+    return players.get(0).size + players.get(1).size === 4;
+  }
 }
 
+
+// Container component for 'game' reducer
 function mapStateToProps(state, props) {
   return {
     game: state.get('game')

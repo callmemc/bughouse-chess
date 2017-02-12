@@ -41,6 +41,7 @@ class Chessboard extends Component {
             {_.map(files, file =>
               <Square
                 key={file}
+                boardNum={this.props.boardNum}
                 rank={rank}
                 file={file}
                 piece={pieces[rank-1][COLUMN_MAP[file]-1]}                 

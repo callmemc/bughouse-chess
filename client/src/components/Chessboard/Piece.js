@@ -15,8 +15,8 @@ const pieceSource = {
     };
   },
 
+  // TODO: disallow drag if game isn't ready
   canDrag: (props) => {
-    console.log(getPieceColor(props.piece), props.userColor);
     return getPieceColor(props.piece) === props.userColor;
   }
 };
@@ -32,7 +32,6 @@ function collect(connect, monitor) {
 // TODO: piece needs an identifier?
 class Piece extends Component {
   static propTypes = {
-    color: PropTypes.string,
     piece: PropTypes.string.isRequired,
     square: PropTypes.string,   // If not there, then it's in the pieceReserve
 

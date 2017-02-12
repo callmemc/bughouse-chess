@@ -34,7 +34,8 @@ class ChessGame extends Component {
           <PieceReserve 
             queue={pieceReserve.get(otherColor)}
             userColor={userColor} />        
-          <Chessboard 
+          <Chessboard
+            boardNum={boardNum} 
             fen={board.get('fen')}
             dropMove={actions.dropMove}
             makeMove={actions.makeMove}

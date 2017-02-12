@@ -36,13 +36,10 @@ class PieceDragLayer extends Component {
 
     const { x, y } = currentOffset;
     const transform = `translate(${x}px, ${y}px)`;
-    // const pillWidth = $('.actionsProperty__Pill').first().outerWidth();
 
     return {
       transform: transform,
       WebkitTransform: transform
-      // ,
-      // width: pillWidth
     };
   }
 }

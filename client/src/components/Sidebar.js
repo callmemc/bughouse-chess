@@ -21,7 +21,10 @@ class Sidebar extends Component {
     return (
       <div className="Sidebar">                
         <div>
-          <Clock color={opponentColor} turn={turn} />
+          <Clock 
+            color={opponentColor} 
+            turn={turn} 
+            userColor={userColor} />
           <Player
             joined={!!players.get(opponentColor)}
             team={getTeam(boardNum, opponentColor)} />
@@ -30,7 +33,10 @@ class Sidebar extends Component {
           <Player
             joined={!!players.get(userColor)}
             team={getTeam(boardNum, userColor)} />
-          <Clock color={userColor} turn={turn} />                  
+          <Clock 
+            color={userColor} 
+            turn={turn}
+            userColor={userColor} />                  
           </div>
       </div>
     );
@@ -39,15 +45,18 @@ class Sidebar extends Component {
 
 class Clock extends Component {
   static propTypes = {
-    color: PropTypes.string.isRequired, // TODO: rename to side?    
-    turn: PropTypes.string.isRequired
+    color: PropTypes.string.isRequired,
+    turn: PropTypes.string.isRequired,
+    userColor: PropTypes.string.isRequired
   };
 
   render() {
-    const {color, turn} = this.props;
+    const {color, turn, userColor} = this.props;
     let text;
     if (color === turn) {
-      text = color === 'w' ? "White's Turn" : "Black's Turn";
+      text = color === userColor ? 
+        "Your turn!" : 
+        "Waiting for opponent";
     }
     
     return <div className='Clock'>{text}</div>

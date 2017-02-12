@@ -6,9 +6,21 @@ import { COLUMN_MAP } from './utils';
 import { ItemTypes } from '../../constants/dndTypes';
 
 const squareTarget = {
-  // canDrop: (props) => {
-  //   // TODO
-  // },
+  canDrop: (props, monitor) => {
+    const item = monitor.getItem();
+    const draggedPiece = item.piece;
+    const targetPiece = props.piece;
+
+    // If dropping from piece reserve, do not allow user to drop
+    //  piece on a non-empty square, or drop a pawn on the first or last rank
+    if (!item.square) {
+      return targetPiece === '-' && 
+        !(draggedPiece.toUpperCase() === 'P' && 
+          (props.rank === 1 || props.rank === 8));
+    } else {
+      return true;
+    }
+  },
 
   drop: (props, monitor, component) => {    
     const item = monitor.getItem();
@@ -39,6 +51,7 @@ class Square extends Component {
   static propTypes = {
     rank: PropTypes.number.isRequired,
     file: PropTypes.string.isRequired,
+    piece: PropTypes.string,
 
     // The following props are injected by React DnD, as defined by the 'collect' function
     connectDropTarget: PropTypes.func.isRequired
@@ -47,12 +60,14 @@ class Square extends Component {
   render() {
     const sum = this.props.rank + COLUMN_MAP[this.props.file];
     const squareColor = sum % 2 === 0 ?
-      'black' : 'white';
+      'dark' : 'light';
 
     return (
       this.props.connectDropTarget(
         <div className="Chessboard-square-container">
-            <div className={`Chessboard-square ${squareColor}`}>
+            <div className={`Chessboard-square 
+              Chessboard-square--${this.props.boardNum} 
+              ${squareColor}`}>
               <Piece 
                 piece={this.props.piece} 
                 square={this._getBoardSquare()}
