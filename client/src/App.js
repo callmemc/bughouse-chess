@@ -1,8 +1,17 @@
 import React, { Component } from 'react';
 import './App.css';
-import Game from './components/Game'
+// import Client from './Client';
+// import { initializeSocket } from './socketClient';
 
 class App extends Component {
+  // componentWillMount() {
+  //   // Hits server to initialize session before socket connection is
+  //   //  initialized, so that socket can share the server-initialized session
+  //   Client.getSession(() => {
+  //     initializeSocket();
+  //   });
+  // }
+
   render() {
     return (
       <div className="App">
@@ -10,8 +19,10 @@ class App extends Component {
           <div className="App-header__text">
             Chowhouse
           </div>
-        </div>        
-        <Game />
+        </div>
+        <div className="App__container">        
+          {this.props.children}
+        </div>
       </div>
     );
   }

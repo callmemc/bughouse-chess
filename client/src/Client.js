@@ -1,11 +1,25 @@
-/* eslint-disable no-undef */
+import $ from 'jquery';
 
-// TODO: problem is that this proxies full route
-
-// TODO: move this into store. This is jsut a test
+function getSession(cb) {
+  // TODO: Figure out why fetch API doesn't seem to be storing cookies in 
+  //  browser correctly
+  // return fetch(`api/test`, {
+  //   accept: 'application/json',
+  //   credentials: 'same-origin'
+  // }).then(checkStatus)
+  //   .then(parseJSON)
+  //   .then(cb);
+  return $.ajax({
+      type: 'GET',
+      url: '/api/session',
+    })
+    .done((data, textStatus, jqXHR) => {
+      cb();
+    })
+}
 
 function getGame(gameId, cb) {
-  return fetch(`api/game/${gameId}`, {
+  return fetch(`/api/game/${gameId}`, {
     accept: 'application/json',
   }).then(checkStatus)
     .then(parseJSON)
@@ -19,7 +33,7 @@ function checkStatus(response) {
     const error = new Error(`HTTP Error ${response.statusText}`);
     error.status = response.statusText;
     error.response = response;
-    console.log(error); // eslint-disable-line no-console
+    console.log(error);
     throw error;
   }
 }
@@ -28,5 +42,8 @@ function parseJSON(response) {
   return response.json();
 }
 
-const Client = { getGame };
+const Client = { 
+  getGame,
+  getSession
+};
 export default Client;

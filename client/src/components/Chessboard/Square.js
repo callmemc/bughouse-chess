@@ -26,18 +26,12 @@ const squareTarget = {
     const item = monitor.getItem();
     const toSquare = props.file + props.rank;
 
-    if (item.square) {
-      props.makeMove({ 
-        fromSquare: item.square, 
-        toSquare
-      });        
-    } else {
-      props.dropMove({  
-        toSquare, 
-        color: item.color,
-        piece: item.piece
-      });  
-    }
+    props.makeMove({  
+      fromSquare: item.square, 
+      toSquare, 
+      color: item.color,
+      piece: item.piece
+    });  
   }
 };
 

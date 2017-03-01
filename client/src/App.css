@@ -14,14 +14,20 @@
   }
 }
 
-.Game {
+.App__container {
   padding: 30px 20px 30px;
+}
+
+.Game {  
   display: flex;
-  justify-content: space-around;
 
   &--other {
     pointer-events: none;
     user-select: none;
     transform: scale(0.8);
   }
+}
+
+.HomePage {
+  text-align: center;
 }

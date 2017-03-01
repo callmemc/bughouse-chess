@@ -1,2 +1,7 @@
 node_modules
 bughouse-chess.sublime-workspace
+
+# misc
+.DS_Store
+.env
+npm-debug.log

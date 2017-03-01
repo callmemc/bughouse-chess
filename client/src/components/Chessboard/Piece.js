@@ -36,7 +36,6 @@ class Piece extends Component {
     square: PropTypes.string,   // If not there, then it's in the pieceReserve
 
     // The following props are injected by React DnD, as defined by the 'collect' function
-    // connectDragPreview: PropTypes.func.isRequired,
     connectDragSource: PropTypes.func.isRequired,
     isDragging: PropTypes.bool.isRequired
   };

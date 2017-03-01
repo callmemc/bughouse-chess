@@ -60,6 +60,19 @@ export function getTeam(board, color) {
   }
 }
 
+export function getPlayer(userId, players) {
+  const playerOptions = [
+    {board: 0, color: 'w'},
+    {board: 0, color: 'b'},
+    {board: 1, color: 'w'},
+    {board: 1, color: 'b'}
+  ]; 
+
+  return playerOptions.find(({ board, color }) =>
+    players.getIn([board, color]) === userId
+  );
+}
+
 // TODO: find a better way to do this...
 export const COLUMN_MAP = {
   a: 1,

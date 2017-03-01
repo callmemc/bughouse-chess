@@ -1,10 +1,10 @@
 import chessjs from 'chess.js';
 import Immutable from 'immutable';
+import _ from 'lodash-compat';
 
 import Constants from '../constants';
-import { getOpposingColor, getOtherBoard, getChessJsPiece } 
-  from '../components/Chessboard/utils';
-import socket from '../socket';
+import { emit } from '../socketClient';
+import { getPlayer } from '../components/Chessboard/utils';
 
 // chessjs instance objects
 const chessArray = [
@@ -22,6 +22,7 @@ const initialState = Immutable.fromJS({
         b: []
       },
       turn: chessArray[0].turn(), 
+      // in_check ?
     },
     {
       fen: chessArray[1].fen(),  
@@ -32,124 +33,73 @@ const initialState = Immutable.fromJS({
       turn: chessArray[1].turn(), 
     }
   ],
-  user: undefined,    // If undefined, user is a spectator
-  players: [{}, {}]         // Players of the game     
+  players: [{}, {}],      // Players of the game     
+  gameStatus: undefined,   // game over: checkmate, draw, stalemate, threefold repetition
+  userId: undefined,    // If undefined, user is a spectator
+  gameId: undefined    // Id of game game being watched
 });
 
-
-// Send move to socket server so that it can be broadcasted to other users
-function makeMove({board, fen, pieceReserveBoard, pieceReserve, pieceReserveColor}) {
-  socket.emit('move', {
-    board,
-    fen,
-    pieceReserveBoard, 
-    pieceReserveColor,
-    pieceReserve: pieceReserve ? pieceReserve.toJS() : undefined
-  });  
-}
-
 export default function game(state = initialState, action) {
-  const { fromSquare, toSquare, color, piece } = action;
-  const board = state.getIn(['user', 'board']);
-  const otherBoard = getOtherBoard(board);
-  const chess = chessArray[board];  // The user's chess instance
-  let updatedPieceReserveBoard, updatedPieceReserveColor, updatedPieceReserve, moveResult;
+  // const board = state.getIn(['user', 'board']);   // TODO
 
   switch (action.type) {
-    case Constants.DROP_MOVE: 
-      // If the piece dropped is not the current turn's color, return
-      // TODO: check if the piece dropped is valid-- not last/first row && not on top of other piece
-      if (color !== chess.turn()) {
-        return state;
-      }
+    // TODO: do these really need to be actions?
+    case Constants.MAKE_MOVE:  
+      const user = getPlayer(state.get('userId'), state.get('players'));
 
-      moveResult = chess.put({ type: piece, color }, toSquare);
-      if (moveResult) {
-        
-        // Remove piece from reserve
-        const pieceIndex = state.getIn(['boards', board, 'pieceReserve', color]).findIndex(p => p === piece);
-        updatedPieceReserve = state.getIn(['boards', board, 'pieceReserve', color])
-            .delete(pieceIndex);
-        updatedPieceReserveBoard = board;
-        updatedPieceReserveColor = color;
+      emit('move', {
+        ..._.pick(action, 'fromSquare', 'toSquare', 'color', 'piece'),
+        boardNum: user.board,
+        gameId: state.get('gameId')
+      });          
+      return state;  
 
-        // Force next turn
-        // TODO: move this to chess object?
-        const tokens = chess.fen().split(' ');
-        tokens[1] = (tokens[1] === 'w') ? 'b' : 'w';
-        chess.load(tokens.join(' '));
-
-        makeMove({
-          board, 
-          fen: chess.fen(), 
-          pieceReserve: updatedPieceReserve,
-          pieceReserveBoard: updatedPieceReserveBoard, 
-          pieceReserveColor: updatedPieceReserveColor
-        });        
-      }  
+    // TODO: does this really need to be under a flux action?
+    case Constants.CREATE_GAME:
+      emit('create game');
+      // Route the user back with game id;
       return state;
-    case Constants.MAKE_MOVE:            
-      // Standard move
-      moveResult = chess.move({ from: fromSquare, to: toSquare });
-
-      if (moveResult) {   // chess.move() returns null if move was invalid
-        const { captured, color } = moveResult;
-
-        if (captured) {
-          // Add piece to partner's reserve
-          const reservePieceColor = getOpposingColor(color);
-          const reservePiece = getChessJsPiece(captured, reservePieceColor);
-          updatedPieceReserve = state.getIn(['boards', otherBoard, 'pieceReserve', reservePieceColor])
-            .push(reservePiece);  
-          updatedPieceReserveBoard = otherBoard;
-          updatedPieceReserveColor = reservePieceColor;          
-        }
-
-        makeMove({
-          board, 
-          fen: chess.fen(), 
-          pieceReserve: updatedPieceReserve,
-          pieceReserveBoard: updatedPieceReserveBoard,
-          pieceReserveColor: updatedPieceReserveColor
-        });
-      }
-      
-      return state;    
-
-    // TODO: Should all the logic go from MAKE_MOVE/DROP_MOVE into UPDATE_GAME? Therefore
-    //  we're not passing around the fen, which is unreliable and can get out of sync
-    //   Instead, we're only emitting and broadcasting moves, and it's the client's job
-    //   to update their chess.js object and therefore the fen?
-    //  Later, the server should store the fen?
-    //  Why not store the chessjs object in memory?
     case Constants.UPDATE_GAME:
-      console.log('update game', action);
-      chessArray[action.board].load(action.fen);
+      const { boardNum, fen, pieceReserve } = action;
 
-      if (action.pieceReserve) {
-        state = state.setIn(['boards', action.pieceReserveBoard, 'pieceReserve', action.pieceReserveColor], 
-          Immutable.fromJS(action.pieceReserve));
+      // TODO: make sure chessjs object is in memory
+      chessArray[boardNum].load(fen);
+
+      if (pieceReserve) {
+        state = state.setIn(['boards', pieceReserve.boardNum, 'pieceReserve', pieceReserve.color], 
+          Immutable.fromJS(pieceReserve.result));
       }
-      return state.mergeIn(['boards', action.board], getUpdatedGameState(action.board));
+      return state.mergeIn(['boards', boardNum], getUpdatedBoardState(boardNum, fen));
+
+    case Constants.LOAD_GAME:
+      const { boards, players, gameId } = action;
+      chessArray[0].load(boards[0].fen);
+      chessArray[1].load(boards[1].fen);
+
+      // TODO: this should be just 1 immutable call
+      state = state.mergeIn(['boards', 0], getUpdatedBoardState(0, boards[0].fen));
+      state = state.setIn(['boards', 0, 'pieceReserve'], Immutable.fromJS(boards[0].pieceReserve));
+      state = state.mergeIn(['boards', 1], getUpdatedBoardState(1, boards[1].fen));
+      state = state.setIn(['boards', 1, 'pieceReserve'], Immutable.fromJS(boards[1].pieceReserve));
+      state = state.set('players', Immutable.fromJS(players));
+      state = state.set('gameId', gameId);
+      console.log(gameId + ' loaded');
+
+      return state;
 
     // TODO: move all the user info to a separate reducer?
     case Constants.JOIN_USER:
-      console.log('JOIN USER as', action.board, action.color);
-      return state.set('user', Immutable.Map({
-        board: action.board,
-        color: action.color
-      }));
-
+      return state.set('userId', action.userId);
     case Constants.UPDATE_PLAYERS:
       return state.set('players', Immutable.fromJS(action.players));
     default:
       return state;
   }
 
-  function getUpdatedGameState(board) {
-    const boardChess = chessArray[board];
+  function getUpdatedBoardState(boardNum, fen) {
+    const boardChess = chessArray[boardNum];
     return Immutable.Map({
-      fen: boardChess.fen(),
+      fen: fen,
       turn: boardChess.turn()
     });
   }

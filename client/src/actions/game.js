@@ -16,9 +16,22 @@ export function makeMove(payload) {
   };
 }
 
+export function createGame() {
+  return {
+    type: Constants.CREATE_GAME
+  };
+}
+
 export function updateGame(payload) {
   return {
     type: Constants.UPDATE_GAME,
+    ...payload
+  };
+}
+
+export function loadGame(payload) {
+  return {
+    type: Constants.LOAD_GAME,
     ...payload
   };
 }
@@ -30,9 +43,9 @@ export function updatePlayers(payload) {
   };
 }
 
-export function joinUser(payload) {
+export function joinUser(userId) {
   return {
     type: Constants.JOIN_USER,
-    ...payload
+    userId
   };
 }

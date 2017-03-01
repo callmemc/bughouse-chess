@@ -1,70 +1,63 @@
-// babel-node?
-var app = require('express')();
-var http = require('http').Server(app);
-var io = require('socket.io')(http);
-// var models = require('./models');
+const app = require('express')();
+const http = require('http').Server(app);
+const RedisStore = require('connect-redis')(session);
+import startSocketServer from './socketServer';
+import session from 'express-session';
+import redisClient from './redisClient';
 
+const io = startSocketServer(http);
+
+// app.set('trust proxy', 1);
 app.set('port', (process.env.PORT || 3001));
 
-app.get('/api/game/:gameId', function (req, res) {
-  const MOCK_RESPONSE = {
-    gameId: 'test123'
-  };
-
-	res.json(MOCK_RESPONSE);
+// TODO: production-ready session store 
+//  See https://github.com/expressjs/session#compatible-session-stores
+// TODO: use secure cookies in production 
+//  See https://github.com/expressjs/session#cookiesecure
+const sessionMiddleware = session({
+  secret: 'rJ1J9RVFe',
+  saveUninitialized: true,
+  resave: true,
+  store: new RedisStore({
+    client: redisClient
+  }),
+  cookie: { 
+    path: '/', httpOnly: false, secure: false, maxAge: null
+  }
+  //, proxy: true
 });
 
-var userOptions = [
-	{board: 0, color: 'w'},
-	{board: 0, color: 'b'},
-	{board: 1, color: 'w'},
-	{board: 1, color: 'b'}
-]; 
+// Note: this is not invoked until the server is hit
+app.use(sessionMiddleware);
 
-// TEMP IN MEMORY SUPER HACKY "DATABASE"
-var players = [{}, {}];
-
-io.on('connection', function(socket) {
-	var myUser;
-	const userId = socket.id; // temp. should be session based?
-	console.log('a user connected!', userId); 
-
-	// Assign user to a board number and color, with the first board
-	//  and white taking priority
-	userOptions.some(user => {
-		if (!players[user.board][user.color]) {
-			players[user.board][user.color] = userId;
-			myUser = user;
-
-			// User join event
-			socket.emit('join user', user);			
-			console.log('join user:', userId, user); 
-
-			// Any player join event
-			io.emit('update players', { players });
-			console.log('update players:', players);
-
-			return true;
-		}
-	});	
-
-	// Broadcast
-	socket.on('move', (data) => {
-		console.log('MOVE:', data);
-		io.emit('update game', data);
-	});	
-
-	socket.on('disconnect', () => {
-		if (myUser) {
-			delete players[myUser.board][myUser.color];
-			io.emit('update players', { players });
-			console.log('user disconnected', socket.id);
-			console.log(players);
-		}
-  });
+// Sharing sessions with socket.io and express
+//  See http://stackoverflow.com/questions/25532692/how-to-share-sessions-with-socket-io-1-x-and-express-4-x
+// Note: This relies on the express-session cookie (name = 'connect.sid'). 
+//  If no such cookie is found, the 'io' cookie will be reset with every new socket connection
+io.use((socket, next) => {
+  sessionMiddleware(socket.request, socket.request.res, next);
 });
 
-var port = app.get('port');
-http.listen(port, function () {
+// Logging out the session ID just for debugging purposes
+// app.use((req, res, next) => {
+//   console.log('req.sessionID:', req.sessionID);
+//   next();
+// });
+
+app.get('/api/session', function (req, res) {
+  res.send();
+});
+
+// TODO: api? do we need this or can we just rely on sockets?
+//  maybe for initial load of game?
+// app.get('/api/game/:gameId', function (req, res) {
+//   const MOCK_RESPONSE = {
+//     gameId: 'test123'
+//   };
+// 	res.json(MOCK_RESPONSE);
+// });
+
+const port = app.get('port');
+http.listen(port, () => {
  	console.log('Example app listening on port ' + port);
 });

@@ -16,8 +16,8 @@ class PieceReserve extends Component {
     return (
       <div className="PieceReserve">  
         {this.props.queue.map((piece, i) => (
-          <div className="PieceReserve__piece-container">
-            <Piece key={i}
+          <div className="PieceReserve__piece-container" key={i}>
+            <Piece
               piece={piece} 
               userColor={this.props.userColor} />  
           </div>
