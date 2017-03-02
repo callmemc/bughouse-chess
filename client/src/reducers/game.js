@@ -1,52 +1,22 @@
 import chessjs from 'chess.js';
-import Immutable from 'immutable';
+import Immutable, { Map, Iterable } from 'immutable';
 import _ from 'lodash-compat';
 
 import Constants from '../constants';
 import { emit } from '../socketClient';
 import { getPlayer } from '../components/Chessboard/utils';
 
-// chessjs instance objects
-const chessArray = [
-  new chessjs(),
-  new chessjs()
-];
-
-// TODO: this will probably be sent with database
 const initialState = Immutable.fromJS({
-  boards: [
-    {
-      fen: chessArray[0].fen(),  
-      pieceReserve: {
-        w: [],
-        b: []
-      },
-      turn: chessArray[0].turn(), 
-      // in_check ?
-    },
-    {
-      fen: chessArray[1].fen(),  
-      pieceReserve: {
-        w: [],
-        b: []
-      },
-      turn: chessArray[1].turn(), 
-    }
-  ],
-  players: [{}, {}],      // Players of the game     
-  gameStatus: undefined,   // game over: checkmate, draw, stalemate, threefold repetition
-  userId: undefined,    // If undefined, user is a spectator
-  gameId: undefined    // Id of game game being watched
+  boards: [],
+  players: [{}, {}],      // Players of the game       
+  userId: undefined,      // If undefined, user is a spectator
+  gameId: undefined       // Id of game game being watched
 });
 
 export default function game(state = initialState, action) {
-  // const board = state.getIn(['user', 'board']);   // TODO
-
   switch (action.type) {
-    // TODO: do these really need to be actions?
     case Constants.MAKE_MOVE:  
       const user = getPlayer(state.get('userId'), state.get('players'));
-
       emit('move', {
         ..._.pick(action, 'fromSquare', 'toSquare', 'color', 'piece'),
         boardNum: user.board,
@@ -62,9 +32,6 @@ export default function game(state = initialState, action) {
     case Constants.UPDATE_GAME:
       const { boardNum, fen, pieceReserve } = action;
 
-      // TODO: make sure chessjs object is in memory
-      chessArray[boardNum].load(fen);
-
       if (pieceReserve) {
         state = state.setIn(['boards', pieceReserve.boardNum, 'pieceReserve', pieceReserve.color], 
           Immutable.fromJS(pieceReserve.result));
@@ -73,19 +40,15 @@ export default function game(state = initialState, action) {
 
     case Constants.LOAD_GAME:
       const { boards, players, gameId } = action;
-      chessArray[0].load(boards[0].fen);
-      chessArray[1].load(boards[1].fen);
 
-      // TODO: this should be just 1 immutable call
-      state = state.mergeIn(['boards', 0], getUpdatedBoardState(0, boards[0].fen));
-      state = state.setIn(['boards', 0, 'pieceReserve'], Immutable.fromJS(boards[0].pieceReserve));
-      state = state.mergeIn(['boards', 1], getUpdatedBoardState(1, boards[1].fen));
-      state = state.setIn(['boards', 1, 'pieceReserve'], Immutable.fromJS(boards[1].pieceReserve));
-      state = state.set('players', Immutable.fromJS(players));
-      state = state.set('gameId', gameId);
-      console.log(gameId + ' loaded');
-
-      return state;
+      return state.merge(Immutable.fromJS({
+        boards: [
+          getUpdatedBoardState(0, boards[0].fen, boards[0].pieceReserve),
+          getUpdatedBoardState(1, boards[1].fen, boards[1].pieceReserve)
+        ],
+        players,
+        gameId
+      }));
 
     // TODO: move all the user info to a separate reducer?
     case Constants.JOIN_USER:
@@ -96,11 +59,33 @@ export default function game(state = initialState, action) {
       return state;
   }
 
-  function getUpdatedBoardState(boardNum, fen) {
-    const boardChess = chessArray[boardNum];
-    return Immutable.Map({
+  /**
+   *  TODO: comment
+   *
+   *  {
+   *    fen: chessArray[0].fen(),        
+   *    turn: chessArray[0].turn(),
+   *    pieceReserve: {
+   *      w: [],
+   *      b: []
+   *    } 
+   *  }
+  */
+  function getUpdatedBoardState(boardNum, fen, pieceReserve) {
+    const chess = new chessjs(fen);
+
+    let result = Map({
       fen: fen,
-      turn: boardChess.turn()
+      turn: chess.turn()
     });
+
+    if (pieceReserve) {
+      if (!Iterable.isIterable(pieceReserve)) {
+        pieceReserve = Immutable.fromJS(pieceReserve);
+      }
+      result = result.set('pieceReserve', pieceReserve);
+    }
+
+    return result;
   }
 }

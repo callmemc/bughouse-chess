@@ -50,7 +50,6 @@ export default function startSocketServer(http) {
     
     socket.on('move', data => {
       makeMove(data, (boardNum, fen, pieceReserve) => {
-        console.log('socket boardNum', boardNum);
         // TODO: Broadcast to room
         io.emit('update game', { boardNum, fen, pieceReserve }); 
       })

@@ -29,8 +29,6 @@ export function createGame(gameId) {
 }
 
 export function updateGame(gameId, boardNum, fen, pieceReserve) {  
-  console.log('updateGame boardNum', boardNum);
-
   if (pieceReserve) {
     const pieceReserveKey = `pieceReserve${pieceReserve.boardNum}`;
 

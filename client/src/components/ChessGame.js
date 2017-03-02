@@ -18,39 +18,47 @@ import { getOpposingColor } from './Chessboard/utils';
  */
 class ChessGame extends Component {  
   static propTypes = {
-    board: PropTypes.object.isRequired,
+    board: PropTypes.object,
     boardNum: PropTypes.number.isRequired,
-    players: PropTypes.instanceOf(Map)
+    players: PropTypes.instanceOf(Map).isRequired
   };
 
   render() {
-    const { actions, board, boardNum, players, userColor } = this.props;
-    const pieceReserve = board.get('pieceReserve');
-    const otherColor = getOpposingColor(userColor);
 
-    return (
-      <div className="ChessGame">
-        <div className="ChessGame__play-area">          
-          <PieceReserve 
-            queue={pieceReserve.get(otherColor)}
-            userColor={userColor} />        
-          <Chessboard
-            boardNum={boardNum} 
-            fen={board.get('fen')}
-            dropMove={actions.dropMove}
-            makeMove={actions.makeMove}
+    const { actions, board, boardNum, players, userColor } = this.props;
+
+    if (board) {
+      const pieceReserve = board.get('pieceReserve');
+      const otherColor = getOpposingColor(userColor);
+
+      return (
+        <div className="ChessGame">
+          <div className="ChessGame__play-area">          
+            <PieceReserve 
+              queue={pieceReserve.get(otherColor)}
+              userColor={userColor} />        
+            <Chessboard
+              boardNum={boardNum} 
+              fen={board.get('fen')}
+              dropMove={actions.dropMove}
+              makeMove={actions.makeMove}
+              userColor={userColor} />
+            <PieceReserve 
+              queue={pieceReserve.get(userColor)}
+              userColor={userColor} />                            
+          </div>
+          <Sidebar
+            boardNum={boardNum}
+            players={players}
+            turn={board.get('turn')}
             userColor={userColor} />
-          <PieceReserve 
-            queue={pieceReserve.get(userColor)}
-            userColor={userColor} />                            
         </div>
-        <Sidebar
-          boardNum={boardNum}
-          players={players}
-          turn={board.get('turn')}
-          userColor={userColor} />
-      </div>
-    );
+      );
+    } else {
+      return (
+        <div>Loading</div>
+      );
+    }
   }
 
   // This isn't working for some reason...

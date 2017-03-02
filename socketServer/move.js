@@ -4,8 +4,6 @@ import * as redisClient from '../redisClient';
 import { getOpposingColor, getOtherBoard, getChessJsPiece } from '../utils';
 
 export function makeMove({ boardNum, fromSquare, toSquare, color, piece, gameId }, cb) { 
-  console.log('move boardNum', boardNum);
-
   redisClient.getGame(gameId)
     .then(result => {
       let moveResult, pieceReserveResult;
@@ -25,10 +23,10 @@ export function makeMove({ boardNum, fromSquare, toSquare, color, piece, gameId 
         // Write updated game back to redis
         redisClient.updateGame(gameId, boardNum, fen, pieceReserveResult)
           .then((result) => {
-            console.log('updateGame', result);
+            // TODO?
           });
 
-        cb(boardNum, fen, pieceReserveResult);       
+        cb(boardNum, fen, pieceReserveResult);
       }  
 
       function dropMove() {
