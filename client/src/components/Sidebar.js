@@ -2,6 +2,7 @@ import React, { PropTypes, Component } from 'react';
 import { Map } from 'immutable';
 
 import { getOpposingColor, getTeam } from './Chessboard/utils';
+import { GameStatus } from '../chessUtils';
 
 /** 
  *  Sidebar of a game
@@ -10,6 +11,7 @@ class Sidebar extends Component {
   static propTypes = {
     boardNum: PropTypes.number.isRequired,
     players: PropTypes.instanceOf(Map).isRequired,
+    status: PropTypes.symbol,
     turn: PropTypes.string.isRequired,
     userColor: PropTypes.oneOf(['w', 'b'])
   };
@@ -30,6 +32,9 @@ class Sidebar extends Component {
             team={getTeam(boardNum, opponentColor)} />
         </div>
         <div>
+          {this.renderGameStatus()}
+        </div>
+        <div>
           <Player
             joined={!!players.get(userColor)}
             team={getTeam(boardNum, userColor)} />
@@ -40,6 +45,15 @@ class Sidebar extends Component {
           </div>
       </div>
     );
+  }
+
+  renderGameStatus() {
+    switch (this.props.status) {
+      case GameStatus.CHECKMATE:
+        return 'Checkmate';
+      default:
+        return;
+    }
   }
 }
 

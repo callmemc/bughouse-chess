@@ -50,6 +50,7 @@ class ChessGame extends Component {
           <Sidebar
             boardNum={boardNum}
             players={players}
+            status={board.get('status')}
             turn={board.get('turn')}
             userColor={userColor} />
         </div>

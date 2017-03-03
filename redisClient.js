@@ -95,6 +95,7 @@ export function leaveGame(gameId, userId, callback) {
     .then((result) => {
       players = JSON.parse(result);      
 
+      // TODO: figure out why players is randomly undefined and throwing error
       const foundPlayer = playerOptions.find(user =>
         players[user.board][user.color] == userId);
 

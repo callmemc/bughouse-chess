@@ -23,7 +23,7 @@ class Game extends Component {
     const { actions, game } = this.props;    
     const players = game.get('players'); 
     const userId = game.get('userId');   
-    const user = getPlayer(userId, players);
+    const user = getPlayer(userId, players);    
 
     if (user) {
       const userBoard = user.board;
@@ -101,14 +101,13 @@ class Game extends Component {
   // }
 
   // TODO: move this into a selector?
-  _isGameReady() {
-    const players = this.props.game.get('players');
-    return players.get(0).size + players.get(1).size === 4;
-  }
+  // _isGameReady() {
+  //   const players = this.props.game.get('players');
+  //   return players.get(0).size + players.get(1).size === 4;
+  // }  
 }
 
-
-// Container component for 'game' reducer
+// Redux ontainer component for 'game' reducer
 function mapStateToProps(state, props) {
   return {
     game: state.get('game')
@@ -121,7 +120,6 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-// Redux stuffs
 export default connect(
   mapStateToProps,
   mapDispatchToProps

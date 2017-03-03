@@ -5,6 +5,7 @@ import _ from 'lodash-compat';
 import Constants from '../constants';
 import { emit } from '../socketClient';
 import { getPlayer } from '../components/Chessboard/utils';
+import { GameStatus, getGameStatus } from '../chessUtils';
 
 const initialState = Immutable.fromJS({
   boards: [],
@@ -15,7 +16,12 @@ const initialState = Immutable.fromJS({
 
 export default function game(state = initialState, action) {
   switch (action.type) {
-    case Constants.MAKE_MOVE:  
+    case Constants.MAKE_MOVE:
+      // Don't allow any moves if game is over  
+      if (isGameOver(state)) {
+        return state; 
+      }
+
       const user = getPlayer(state.get('userId'), state.get('players'));
       emit('move', {
         ..._.pick(action, 'fromSquare', 'toSquare', 'color', 'piece'),
@@ -60,14 +66,15 @@ export default function game(state = initialState, action) {
   }
 
   /**
-   *  TODO: comment
+   *  Board state
    *
    *  {
-   *    fen: chessArray[0].fen(),        
-   *    turn: chessArray[0].turn(),
+   *    fen: ...,        
+   *    turn: ...,
+   *    status: ...,
    *    pieceReserve: {
-   *      w: [],
-   *      b: []
+   *      w: [...],
+   *      b: [...]
    *    } 
    *  }
   */
@@ -76,7 +83,8 @@ export default function game(state = initialState, action) {
 
     let result = Map({
       fen: fen,
-      turn: chess.turn()
+      turn: chess.turn(),
+      status: getGameStatus(chess)
     });
 
     if (pieceReserve) {
@@ -88,4 +96,16 @@ export default function game(state = initialState, action) {
 
     return result;
   }
+}
+
+// Selector
+export function isGameOver(state) {
+  const boards = state.get('boards');
+
+  if (!boards.get(0) || !boards.get(1)) {
+    return false;
+  }
+
+  return boards.get(0).get('status') !== GameStatus.IN_PROGRESS ||
+    boards.get(1).get('status') !== GameStatus.IN_PROGRESS;
 }

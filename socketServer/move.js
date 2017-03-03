@@ -1,4 +1,4 @@
-import chessjs from 'chess.js';
+import chessjs from '../chess.js';
 
 import * as redisClient from '../redisClient';
 import { getOpposingColor, getOtherBoard, getChessJsPiece } from '../utils';
@@ -45,7 +45,7 @@ export function makeMove({ boardNum, fromSquare, toSquare, color, piece, gameId 
           pieceReserveResult = { boardNum, color, result: pieceReserve };
 
           advanceTurn(chess);
-        }  
+        }
       } 
 
       function normalMove() {
@@ -70,13 +70,16 @@ export function makeMove({ boardNum, fromSquare, toSquare, color, piece, gameId 
             }
           } 
         }
-      }
+      }      
     });   
 }
 
-// Advance turn by modifying fen--chessjs has no such method
+// Advance turn by modifying and loading fen
 function advanceTurn(chess) {
   const tokens = chess.fen().split(' ');
   tokens[1] = (tokens[1] === 'w') ? 'b' : 'w';
-  chess.load(tokens.join(' '));
+
+  // Passing in 'force' option to force the load of positions that are invalid
+  //  in a normal game of chess, but are valid in bughouse (e.g. 9 pawns)
+  chess.load(tokens.join(' '), {force: true});
 }
