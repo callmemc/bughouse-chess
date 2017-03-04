@@ -329,10 +329,11 @@ var Chess = function(fen) {
       }
     }
 
-    if ((tokens[3][1] == '3' && tokens[1] == 'w') ||
-        (tokens[3][1] == '6' && tokens[1] == 'b')) {
-          return {valid: false, error_number: 11, error: errors[11]};
-    }
+    // TODO: this is causing me trouble
+    // if ((tokens[3][1] == '3' && tokens[1] == 'w') ||
+    //     (tokens[3][1] == '6' && tokens[1] == 'b')) {
+    //       return {valid: false, error_number: 11, error: errors[11]};
+    // }
 
     /* everything's okay! */
     return {valid: true, error_number: 0, error: errors[0]};

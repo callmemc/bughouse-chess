@@ -19,6 +19,7 @@ export default function game(state = initialState, action) {
     case Constants.MAKE_MOVE:
       // Don't allow any moves if game is over
       if (isGameOver(state)) {
+        console.error('Game is over, move not allowed')
         return state;
       }
 
