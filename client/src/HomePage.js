@@ -7,7 +7,7 @@ import {createGame} from './actions/game';
 import Client from './Client';
 import { initializeSocket } from './socketClient';
 
-class HomePage extends Component { 
+class HomePage extends Component {
   state = {
     displayCreateDialog: false
   };
@@ -24,7 +24,7 @@ class HomePage extends Component {
     return (
       <div className="HomePage">
         <h1>Welcome to Chowhouse!</h1>
-        <RaisedButton 
+        <RaisedButton
           label="Create Game"
           onTouchTap={this.handleOpenDialog}
           primary={true} />
@@ -50,7 +50,7 @@ class HomePage extends Component {
     ];
 
     return (
-      <Dialog 
+      <Dialog
         title="Create Bughouse Game"
         open={this.state.displayCreateDialog}
         actions={actions}>

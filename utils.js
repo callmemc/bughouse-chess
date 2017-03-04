@@ -15,4 +15,4 @@ export const playerOptions = [
   {board: 0, color: 'b'},
   {board: 1, color: 'w'},
   {board: 1, color: 'b'}
-]; 
+];

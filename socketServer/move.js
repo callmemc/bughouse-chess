@@ -3,7 +3,7 @@ import chessjs from '../chess.js';
 import * as redisClient from '../redisClient';
 import { getOpposingColor, getOtherBoard, getChessJsPiece } from '../utils';
 
-export function makeMove({ boardNum, fromSquare, toSquare, color, piece, gameId }, cb) { 
+export function makeMove({ boardNum, fromSquare, toSquare, color, piece, gameId }, cb) {
   redisClient.getGame(gameId)
     .then(result => {
       let moveResult, pieceReserveResult;
@@ -27,7 +27,7 @@ export function makeMove({ boardNum, fromSquare, toSquare, color, piece, gameId 
           });
 
         cb(boardNum, fen, pieceReserveResult);
-      }  
+      }
 
       function dropMove() {
         // If the piece dropped is not the current turn's color, return
@@ -36,7 +36,7 @@ export function makeMove({ boardNum, fromSquare, toSquare, color, piece, gameId 
         }
 
         moveResult = chess.put({ type: piece, color }, toSquare);
-        if (moveResult) {          
+        if (moveResult) {
           // Remove dropped piece from reserve
           const pieceReserve = boards[boardNum].pieceReserve[color];
           const droppedPieceIndex = pieceReserve.indexOf(piece);
@@ -46,7 +46,7 @@ export function makeMove({ boardNum, fromSquare, toSquare, color, piece, gameId 
 
           advanceTurn(chess);
         }
-      } 
+      }
 
       function normalMove() {
         moveResult = chess.move({ from: fromSquare, to: toSquare });
@@ -68,10 +68,10 @@ export function makeMove({ boardNum, fromSquare, toSquare, color, piece, gameId 
               color: reservePieceColor,
               result: pieceReserve
             }
-          } 
+          }
         }
-      }      
-    });   
+      }
+    });
 }
 
 // Advance turn by modifying and loading fen

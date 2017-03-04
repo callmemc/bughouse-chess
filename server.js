@@ -10,9 +10,9 @@ const io = startSocketServer(http);
 // app.set('trust proxy', 1);
 app.set('port', (process.env.PORT || 3001));
 
-// TODO: production-ready session store 
+// TODO: production-ready session store
 //  See https://github.com/expressjs/session#compatible-session-stores
-// TODO: use secure cookies in production 
+// TODO: use secure cookies in production
 //  See https://github.com/expressjs/session#cookiesecure
 const sessionMiddleware = session({
   secret: 'rJ1J9RVFe',
@@ -21,7 +21,7 @@ const sessionMiddleware = session({
   store: new RedisStore({
     client: redisClient
   }),
-  cookie: { 
+  cookie: {
     path: '/', httpOnly: false, secure: false, maxAge: null
   }
   //, proxy: true
@@ -32,7 +32,7 @@ app.use(sessionMiddleware);
 
 // Sharing sessions with socket.io and express
 //  See http://stackoverflow.com/questions/25532692/how-to-share-sessions-with-socket-io-1-x-and-express-4-x
-// Note: This relies on the express-session cookie (name = 'connect.sid'). 
+// Note: This relies on the express-session cookie (name = 'connect.sid').
 //  If no such cookie is found, the 'io' cookie will be reset with every new socket connection
 io.use((socket, next) => {
   sessionMiddleware(socket.request, socket.request.res, next);

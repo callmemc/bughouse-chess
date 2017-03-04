@@ -45,7 +45,7 @@ class Piece extends Component {
 
     const opacity = isDragging ? 0 : 1;
     return (
-      connectDragSource(        
+      connectDragSource(
         <div className={cx({
             "Piece": true,
             "Piece--dragging": isDragging

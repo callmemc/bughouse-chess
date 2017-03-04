@@ -19,8 +19,8 @@ const initialPieceReserve = JSON.stringify({ w: [], b: [] });
 const initialPlayers = JSON.stringify([{}, {}]);
 export function createGame(gameId) {
   return client.hmsetAsync(gameId, [
-      "fen0", initialFen, 
-      "fen1", initialFen, 
+      "fen0", initialFen,
+      "fen1", initialFen,
       "pieceReserve0", initialPieceReserve,
       "pieceReserve1", initialPieceReserve,
       "players", initialPlayers
@@ -28,7 +28,7 @@ export function createGame(gameId) {
     .catch(/*TODO*/);
 }
 
-export function updateGame(gameId, boardNum, fen, pieceReserve) {  
+export function updateGame(gameId, boardNum, fen, pieceReserve) {
   if (pieceReserve) {
     const pieceReserveKey = `pieceReserve${pieceReserve.boardNum}`;
 
@@ -51,7 +51,7 @@ export function updateGame(gameId, boardNum, fen, pieceReserve) {
 
 export function getGame(gameId) {
   return client.hgetallAsync(gameId)
-    .then((game) => {   
+    .then((game) => {
       return {
         boards: [
           {
@@ -66,26 +66,26 @@ export function getGame(gameId) {
         players: JSON.parse(game.players)
       };
     })
-    .catch(/*TODO*/);  
+    .catch(/*TODO*/);
 }
 
-export function joinGame(gameId, userId, callback) {  
+export function joinGame(gameId, userId, callback) {
   let players;
   return client.hgetAsync(gameId, "players")
     .then((result) => {
       players = JSON.parse(result);
-      // Assign new player to first available board and color   
+      // Assign new player to first available board and color
       const newPlayer = playerOptions.find(user =>
         !players[user.board][user.color]);
 
       if (newPlayer) {
         players[newPlayer.board][newPlayer.color] = userId;
-        return client.hsetAsync(gameId, 'players', JSON.stringify(players));          
+        return client.hsetAsync(gameId, 'players', JSON.stringify(players));
       }
     })
     .then((result) => {
       return players;
-    })          
+    })
     .catch(/*TODO*/);
 }
 
@@ -93,7 +93,7 @@ export function leaveGame(gameId, userId, callback) {
   let players;
   return client.hgetAsync(gameId, "players")
     .then((result) => {
-      players = JSON.parse(result);      
+      players = JSON.parse(result);
 
       // TODO: figure out why players is randomly undefined and throwing error
       const foundPlayer = playerOptions.find(user =>
@@ -101,11 +101,11 @@ export function leaveGame(gameId, userId, callback) {
 
       if (foundPlayer) {
         delete players[foundPlayer.board][foundPlayer.color];
-        return client.hsetAsync(gameId, 'players', JSON.stringify(players));          
+        return client.hsetAsync(gameId, 'players', JSON.stringify(players));
       }
     })
     .then((result) => {
       return players;
-    })          
-    .catch(/*TODO*/);  
+    })
+    .catch(/*TODO*/);
 }

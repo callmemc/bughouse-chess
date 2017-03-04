@@ -14,24 +14,24 @@ const squareTarget = {
     // If dropping from piece reserve, do not allow user to drop
     //  piece on a non-empty square, or drop a pawn on the first or last rank
     if (!item.square) {
-      return targetPiece === '-' && 
-        !(draggedPiece.toUpperCase() === 'P' && 
+      return targetPiece === '-' &&
+        !(draggedPiece.toUpperCase() === 'P' &&
           (props.rank === 1 || props.rank === 8));
     } else {
       return true;
     }
   },
 
-  drop: (props, monitor, component) => {    
+  drop: (props, monitor, component) => {
     const item = monitor.getItem();
     const toSquare = props.file + props.rank;
 
-    props.makeMove({  
-      fromSquare: item.square, 
-      toSquare, 
+    props.makeMove({
+      fromSquare: item.square,
+      toSquare,
       color: item.color,
       piece: item.piece
-    });  
+    });
   }
 };
 
@@ -59,11 +59,11 @@ class Square extends Component {
     return (
       this.props.connectDropTarget(
         <div className="Chessboard-square-container">
-            <div className={`Chessboard-square 
-              Chessboard-square--${this.props.boardNum} 
+            <div className={`Chessboard-square
+              Chessboard-square--${this.props.boardNum}
               ${squareColor}`}>
-              <Piece 
-                piece={this.props.piece} 
+              <Piece
+                piece={this.props.piece}
                 square={this._getBoardSquare()}
                 userColor={this.props.userColor} />
           </div>

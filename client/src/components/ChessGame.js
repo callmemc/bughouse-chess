@@ -11,12 +11,12 @@ import PieceReserve from './PieceReserve';
 import { getOpposingColor } from './Chessboard/utils';
 
 
-/** 
+/**
  *  This holds the user game that the user interacts with
  *   Drag n drop wrapper here
  *   Includes chessboard and piece queue
  */
-class ChessGame extends Component {  
+class ChessGame extends Component {
   static propTypes = {
     board: PropTypes.object,
     boardNum: PropTypes.number.isRequired,
@@ -33,19 +33,19 @@ class ChessGame extends Component {
 
       return (
         <div className="ChessGame">
-          <div className="ChessGame__play-area">          
-            <PieceReserve 
+          <div className="ChessGame__play-area">
+            <PieceReserve
               queue={pieceReserve.get(otherColor)}
-              userColor={userColor} />        
+              userColor={userColor} />
             <Chessboard
-              boardNum={boardNum} 
+              boardNum={boardNum}
               fen={board.get('fen')}
               dropMove={actions.dropMove}
               makeMove={actions.makeMove}
               userColor={userColor} />
-            <PieceReserve 
+            <PieceReserve
               queue={pieceReserve.get(userColor)}
-              userColor={userColor} />                            
+              userColor={userColor} />
           </div>
           <Sidebar
             boardNum={boardNum}

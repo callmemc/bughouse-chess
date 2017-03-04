@@ -20,7 +20,7 @@ class App extends Component {
             Chowhouse
           </div>
         </div>
-        <div className="App__container">        
+        <div className="App__container">
           {this.props.children}
         </div>
       </div>

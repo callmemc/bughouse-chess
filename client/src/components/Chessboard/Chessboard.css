@@ -1,13 +1,13 @@
 /* I think I'll just go with BEM naming conventions for now? */
-.ChessGame {    
+.ChessGame {
     display: flex;
 
-    &__play-area {        
+    &__play-area {
     }
 }
 
 .Chessboard {
-    user-select: none;    
+    user-select: none;
 
     &-row {
         display: flex;
@@ -32,7 +32,7 @@
         &.light {
             background-color: #eee;
         }
-    }    
+    }
 
     &-column-label-row {
         display: flex;
@@ -87,7 +87,7 @@
     margin: 34px 0px 64px 10px;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;    
+    justify-content: space-between;
 
     &-queue-piece {
         font-family: 'Smart Regular';

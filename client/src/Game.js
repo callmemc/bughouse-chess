@@ -20,10 +20,10 @@ class Game extends Component {
   }
 
   render() {
-    const { actions, game } = this.props;    
-    const players = game.get('players'); 
-    const userId = game.get('userId');   
-    const user = getPlayer(userId, players);    
+    const { actions, game } = this.props;
+    const players = game.get('players');
+    const userId = game.get('userId');
+    const user = getPlayer(userId, players);
 
     if (user) {
       const userBoard = user.board;
@@ -32,23 +32,23 @@ class Game extends Component {
 
       return (
         <div className="Game">
-          <div className="Game--user">            
-            <ChessGame 
+          <div className="Game--user">
+            <ChessGame
               actions={actions}
               board={game.getIn(['boards', userBoard])}
               boardNum={userBoard}
               isUserBoard={true}
               players={players.get(userBoard)}
-              userColor={userColor} />            
+              userColor={userColor} />
           </div>
 
           <div className="Game--other">
-            <ChessGame 
+            <ChessGame
               actions={actions}
               board={game.getIn(['boards', otherBoard])}
               boardNum={otherBoard}
               players={players.get(otherBoard)}
-              userColor={getOpposingColor(userColor)} />            
+              userColor={getOpposingColor(userColor)} />
           </div>
         </div>
       );
@@ -56,7 +56,7 @@ class Game extends Component {
       return (
         <div>
           <h1>Loading...</h1>
-          {this.renderJoinDialog()}          
+          {this.renderJoinDialog()}
         </div>
       );
     }
@@ -104,7 +104,7 @@ class Game extends Component {
   // _isGameReady() {
   //   const players = this.props.game.get('players');
   //   return players.get(0).size + players.get(1).size === 4;
-  // }  
+  // }
 }
 
 // Redux ontainer component for 'game' reducer

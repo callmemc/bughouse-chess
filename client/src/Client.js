@@ -1,7 +1,7 @@
 import $ from 'jquery';
 
 function getSession(cb) {
-  // TODO: Figure out why fetch API doesn't seem to be storing cookies in 
+  // TODO: Figure out why fetch API doesn't seem to be storing cookies in
   //  browser correctly
   // return fetch(`api/test`, {
   //   accept: 'application/json',
@@ -42,7 +42,7 @@ function parseJSON(response) {
   return response.json();
 }
 
-const Client = { 
+const Client = {
   getGame,
   getSession
 };

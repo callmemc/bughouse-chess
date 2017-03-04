@@ -23,13 +23,13 @@ class Chessboard extends Component {
     const ranks = userColor === 'w' ? RANKS : RANKS.slice().reverse();
     const files = userColor === 'w' ? FILES : FILES.slice().reverse();
 
-    // TODO: this should be in the reducer, so not recalculated on 
+    // TODO: this should be in the reducer, so not recalculated on
     //  every render--instead, only recalculated when pieces change
     // TODO: I think we can actually replace this with chess.board()
     //  https://github.com/jhlywa/chess.js/blob/master/README.md#board
     const pieces = getPieces2DArray(fen);
 
-    return (      
+    return (
       <div className="Chessboard">
         {_.map(ranks, rank =>
           <div className="Chessboard-row" key={rank}>
@@ -44,7 +44,7 @@ class Chessboard extends Component {
                 boardNum={this.props.boardNum}
                 rank={rank}
                 file={file}
-                piece={pieces[rank-1][COLUMN_MAP[file]-1]}                 
+                piece={pieces[rank-1][COLUMN_MAP[file]-1]}
                 dropMove={this.props.dropMove}
                 makeMove={this.props.makeMove}
                 userColor={userColor} />
@@ -52,14 +52,14 @@ class Chessboard extends Component {
           </div>
         )}
         {this._renderFileLabels()}
-      </div>             
+      </div>
     );
 	}
 
   _renderFileLabels() {
     return (
       <div className="Chessboard-column-label-row">
-        {_.map(FILES, (file, i) => 
+        {_.map(FILES, (file, i) =>
           <div className="Chessboard-column-label-square"
             key={file}>
             <div className="Chessboard-column-label-text">

@@ -3,7 +3,7 @@ import { List } from 'immutable';
 
 import Piece from './Chessboard/Piece';
 
-/** 
+/**
  *  Holds pieces that can be dropped
  */
 class PieceReserve extends Component {
@@ -11,15 +11,15 @@ class PieceReserve extends Component {
     queue: PropTypes.instanceOf(List).isRequired
   };
 
-  render() {      
+  render() {
     // TODO: does each piece need it's own unique identifier?
     return (
-      <div className="PieceReserve">  
+      <div className="PieceReserve">
         {this.props.queue.map((piece, i) => (
           <div className="PieceReserve__piece-container" key={i}>
             <Piece
-              piece={piece} 
-              userColor={this.props.userColor} />  
+              piece={piece}
+              userColor={this.props.userColor} />
           </div>
         ))}
       </div>

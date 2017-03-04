@@ -4,10 +4,10 @@ import { Map } from 'immutable';
 import { getOpposingColor, getTeam } from './Chessboard/utils';
 import { GameStatus } from '../chessUtils';
 
-/** 
+/**
  *  Sidebar of a game
  */
-class Sidebar extends Component {  
+class Sidebar extends Component {
   static propTypes = {
     boardNum: PropTypes.number.isRequired,
     players: PropTypes.instanceOf(Map).isRequired,
@@ -21,11 +21,11 @@ class Sidebar extends Component {
     const opponentColor = getOpposingColor(userColor);
 
     return (
-      <div className="Sidebar">                
+      <div className="Sidebar">
         <div>
-          <Clock 
-            color={opponentColor} 
-            turn={turn} 
+          <Clock
+            color={opponentColor}
+            turn={turn}
             userColor={userColor} />
           <Player
             joined={!!players.get(opponentColor)}
@@ -38,10 +38,10 @@ class Sidebar extends Component {
           <Player
             joined={!!players.get(userColor)}
             team={getTeam(boardNum, userColor)} />
-          <Clock 
-            color={userColor} 
+          <Clock
+            color={userColor}
             turn={turn}
-            userColor={userColor} />                  
+            userColor={userColor} />
           </div>
       </div>
     );
@@ -68,11 +68,11 @@ class Clock extends Component {
     const {color, turn, userColor} = this.props;
     let text;
     if (color === turn) {
-      text = color === userColor ? 
-        "Your turn!" : 
+      text = color === userColor ?
+        "Your turn!" :
         "Waiting for opponent";
     }
-    
+
     return <div className='Clock'>{text}</div>
   }
 }

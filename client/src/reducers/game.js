@@ -9,7 +9,7 @@ import { GameStatus, getGameStatus } from '../chessUtils';
 
 const initialState = Immutable.fromJS({
   boards: [],
-  players: [{}, {}],      // Players of the game       
+  players: [{}, {}],      // Players of the game
   userId: undefined,      // If undefined, user is a spectator
   gameId: undefined       // Id of game game being watched
 });
@@ -17,9 +17,9 @@ const initialState = Immutable.fromJS({
 export default function game(state = initialState, action) {
   switch (action.type) {
     case Constants.MAKE_MOVE:
-      // Don't allow any moves if game is over  
+      // Don't allow any moves if game is over
       if (isGameOver(state)) {
-        return state; 
+        return state;
       }
 
       const user = getPlayer(state.get('userId'), state.get('players'));
@@ -27,8 +27,8 @@ export default function game(state = initialState, action) {
         ..._.pick(action, 'fromSquare', 'toSquare', 'color', 'piece'),
         boardNum: user.board,
         gameId: state.get('gameId')
-      });          
-      return state;  
+      });
+      return state;
 
     // TODO: does this really need to be under a flux action?
     case Constants.CREATE_GAME:
@@ -39,7 +39,7 @@ export default function game(state = initialState, action) {
       const { boardNum, fen, pieceReserve } = action;
 
       if (pieceReserve) {
-        state = state.setIn(['boards', pieceReserve.boardNum, 'pieceReserve', pieceReserve.color], 
+        state = state.setIn(['boards', pieceReserve.boardNum, 'pieceReserve', pieceReserve.color],
           Immutable.fromJS(pieceReserve.result));
       }
       return state.mergeIn(['boards', boardNum], getUpdatedBoardState(boardNum, fen));
@@ -69,13 +69,13 @@ export default function game(state = initialState, action) {
    *  Board state
    *
    *  {
-   *    fen: ...,        
+   *    fen: ...,
    *    turn: ...,
    *    status: ...,
    *    pieceReserve: {
    *      w: [...],
    *      b: [...]
-   *    } 
+   *    }
    *  }
   */
   function getUpdatedBoardState(boardNum, fen, pieceReserve) {
