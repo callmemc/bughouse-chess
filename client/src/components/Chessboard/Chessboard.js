@@ -13,6 +13,8 @@ class Chessboard extends Component {
     dropMove: PropTypes.func.isRequired,
     fen: PropTypes.string.isRequired,
     makeMove: PropTypes.func.isRequired,
+    beginDrag: PropTypes.func.isRequired,
+    endDrag: PropTypes.func.isRequired,
     userColor: PropTypes.oneOf(['w', 'b'])
   };
 
@@ -44,9 +46,12 @@ class Chessboard extends Component {
                 boardNum={this.props.boardNum}
                 rank={rank}
                 file={file}
+                isActive={this._isActiveSquare(file, rank)}
                 piece={pieces[rank-1][COLUMN_MAP[file]-1]}
                 dropMove={this.props.dropMove}
                 makeMove={this.props.makeMove}
+                beginDrag={this.props.beginDrag}
+                endDrag={this.props.endDrag}
                 userColor={userColor} />
             )}
           </div>
@@ -69,6 +74,12 @@ class Chessboard extends Component {
         )}
       </div>
     );
+  }
+
+  _isActiveSquare(file, rank) {
+    const square = file + rank;
+    const { moves } = this.props;
+    return !!(moves && moves.find(move => move.get('to') === square));
   }
 }
 

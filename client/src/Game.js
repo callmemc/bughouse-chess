@@ -5,8 +5,10 @@ import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
 
 import ChessGame from './components/ChessGame';
+import PromotionDialog from './components/PromotionDialog';
 import * as gameActions from './actions/game';
-import { getOpposingColor, getOtherBoard, getPlayer } from './components/Chessboard/utils';
+import { getOpposingColor, getOtherBoard } from './components/Chessboard/utils';
+import { getUser } from './reducers/game';
 import { emit, initializeSocket } from './socketClient';
 import Client from './Client';
 
@@ -20,10 +22,9 @@ class Game extends Component {
   }
 
   render() {
-    const { actions, game } = this.props;
+    const { actions, game, user } = this.props;
     const players = game.get('players');
-    const userId = game.get('userId');
-    const user = getPlayer(userId, players);
+    const moves = game.get('moves');
 
     if (user) {
       const userBoard = user.board;
@@ -38,6 +39,7 @@ class Game extends Component {
               board={game.getIn(['boards', userBoard])}
               boardNum={userBoard}
               isUserBoard={true}
+              moves={moves}
               players={players.get(userBoard)}
               userColor={userColor} />
           </div>
@@ -50,6 +52,8 @@ class Game extends Component {
               players={players.get(otherBoard)}
               userColor={getOpposingColor(userColor)} />
           </div>
+
+          {this.renderPromotionDialog()}
         </div>
       );
     } else {
@@ -86,6 +90,17 @@ class Game extends Component {
     );
   }
 
+  renderPromotionDialog() {
+    const { game } = this.props;
+    const moves = game.get('moves');
+
+    if (moves && game.get('activeTarget')) {
+      return (
+        <PromotionDialog moves={moves} />
+      );
+    }
+  }
+
   joinGame = () => {
     const gameId = this.props.params.gameId;
     emit('join game', gameId);
@@ -107,10 +122,11 @@ class Game extends Component {
   // }
 }
 
-// Redux ontainer component for 'game' reducer
+// Redux container component for 'game' reducer
 function mapStateToProps(state, props) {
   return {
-    game: state.get('game')
+    game: state.get('game'),
+    user: getUser(state.get('game'))
   };
 }
 

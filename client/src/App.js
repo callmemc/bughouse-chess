@@ -11,7 +11,7 @@ class App extends Component {
           className="App-header"
           title={<IndexLink to="/">Chowhouse</IndexLink>}
           showMenuIconButton={false}
-          style={{'background-color': '#24292e'}}/>
+          style={{backgroundColor: '#24292e'}}/>
         <div className="App__container">
           {this.props.children}
         </div>

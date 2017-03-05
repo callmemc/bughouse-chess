@@ -7,12 +7,25 @@ import { ItemTypes } from '../../constants/dndTypes';
 // Specifies the drag source contract.
 const pieceSource = {
   beginDrag: (props) => {
+    if (props.square) {
+      props.beginDrag({
+        square: props.square
+      });
+    }
     // Return the data describing the dragged item
     return {
       color: getPieceColor(props.piece),
       piece: props.piece,
       square: props.square  // NOT required
     };
+  },
+
+  endDrag: (props) => {
+    if (props.square) {
+      props.endDrag({
+        square: props.square
+      });
+    }
   },
 
   // TODO: disallow drag if game isn't ready

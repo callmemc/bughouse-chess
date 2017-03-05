@@ -2,6 +2,20 @@ import Constants from '../constants';
 
 // Action creators = functions that create actions (the payloads)
 
+export function beginDrag(payload) {
+  return {
+    type: Constants.BEGIN_DRAG,
+    ...payload
+  };
+}
+
+export function endDrag(payload) {
+  return {
+    type: Constants.END_DRAG,
+    ...payload
+  };
+}
+
 export function dropMove(payload) {
   return {
     type: Constants.DROP_MOVE,

@@ -10,6 +10,7 @@ export function initializeSocket(gameId) {
   socket = io();
 
   if (gameId) {
+    // joins a room when you're on a specific game page
     socket.emit('watch game', gameId);
   }
 
@@ -35,8 +36,6 @@ export function initializeSocket(gameId) {
     // TODO: reroute the user to the game page
     browserHistory.push(`/game/${gameId}`);
   });
-
-  // What about joining a room when you're on a specific game page?
 }
 
 export function emit(action, data) {

@@ -24,7 +24,6 @@ class ChessGame extends Component {
   };
 
   render() {
-
     const { actions, board, boardNum, players, userColor } = this.props;
 
     if (board) {
@@ -42,6 +41,9 @@ class ChessGame extends Component {
               fen={board.get('fen')}
               dropMove={actions.dropMove}
               makeMove={actions.makeMove}
+              moves={this.props.moves}
+              beginDrag={actions.beginDrag}
+              endDrag={actions.endDrag}
               userColor={userColor} />
             <PieceReserve
               queue={pieceReserve.get(userColor)}

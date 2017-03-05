@@ -3,7 +3,7 @@ import chessjs from '../chess.js';
 import * as redisClient from '../redisClient';
 import { getOpposingColor, getOtherBoard, getChessJsPiece } from '../utils';
 
-export function makeMove({ boardNum, fromSquare, toSquare, color, piece, gameId }, cb) {
+export function makeMove({ boardNum, fromSquare, toSquare, color, piece, gameId, promotion }, cb) {
   redisClient.getGame(gameId)
     .then(result => {
       let moveResult, pieceReserveResult;
@@ -49,7 +49,7 @@ export function makeMove({ boardNum, fromSquare, toSquare, color, piece, gameId 
       }
 
       function normalMove() {
-        moveResult = chess.move({ from: fromSquare, to: toSquare });
+        moveResult = chess.move({ from: fromSquare, to: toSquare, promotion });
         if (moveResult) {   // chess.move() returns null if move was invalid
           const { captured, color } = moveResult;
 

@@ -1,8 +1,9 @@
 import React, { PropTypes, Component } from 'react';
 import { DropTarget } from 'react-dnd';
+import cx from 'classnames';
 
 import Piece from './Piece';
-import { COLUMN_MAP } from './utils';
+import { COLUMN_MAP, isValidDrop } from './utils';
 import { ItemTypes } from '../../constants/dndTypes';
 
 const squareTarget = {
@@ -14,9 +15,7 @@ const squareTarget = {
     // If dropping from piece reserve, do not allow user to drop
     //  piece on a non-empty square, or drop a pawn on the first or last rank
     if (!item.square) {
-      return targetPiece === '-' &&
-        !(draggedPiece.toUpperCase() === 'P' &&
-          (props.rank === 1 || props.rank === 8));
+      return targetPiece === '-' && isValidDrop(draggedPiece, props.rank);
     } else {
       return true;
     }
@@ -24,11 +23,9 @@ const squareTarget = {
 
   drop: (props, monitor, component) => {
     const item = monitor.getItem();
-    const toSquare = props.file + props.rank;
-
     props.makeMove({
       fromSquare: item.square,
-      toSquare,
+      toSquare: props.file + props.rank,
       color: item.color,
       piece: item.piece
     });
@@ -43,6 +40,7 @@ function collect(connect, monitor) {
 
 class Square extends Component {
   static propTypes = {
+    isActive: PropTypes.bool,
     rank: PropTypes.number.isRequired,
     file: PropTypes.string.isRequired,
     piece: PropTypes.string,
@@ -59,12 +57,16 @@ class Square extends Component {
     return (
       this.props.connectDropTarget(
         <div className="Chessboard-square-container">
-            <div className={`Chessboard-square
+            <div className={cx(`Chessboard-square
               Chessboard-square--${this.props.boardNum}
-              ${squareColor}`}>
+              ${squareColor}`, {
+                'Chessboard-square--active': this.props.isActive
+              })}>
               <Piece
                 piece={this.props.piece}
                 square={this._getBoardSquare()}
+                beginDrag={this.props.beginDrag}
+                endDrag={this.props.endDrag}
                 userColor={this.props.userColor} />
           </div>
         </div>
