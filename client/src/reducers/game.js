@@ -168,7 +168,8 @@ export function getUser(state) {
  *  Returns true if the proposed move is a promotion
  */
 export function isPromotion(fromSquare, toSquare, state) {
-  return state.get('moves').find(move =>
+  const moves = state.get('moves');
+  return moves && moves.find(move =>
     move.get('from') === fromSquare && move.get('to') === toSquare &&
     move.get('promotion'));
 }

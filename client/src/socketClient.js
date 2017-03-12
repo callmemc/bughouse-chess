@@ -1,5 +1,5 @@
 import io from 'socket.io-client';
-import { browserHistory } from 'react-router'
+import { hashHistory } from 'react-router'
 
 import store from './store';
 import { updatePlayers, joinUser, updateGame, loadGame } from './actions/game';
@@ -34,7 +34,7 @@ export function initializeSocket(gameId) {
   socket.on('created game', (gameId) => {
     // store.dispatch(loadGame(data));
     // TODO: reroute the user to the game page
-    browserHistory.push(`/game/${gameId}`);
+    hashHistory.push(`/game/${gameId}`);
   });
 }
 

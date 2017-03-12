@@ -5,10 +5,10 @@ import * as redisClient from '../redisClient';
 import { makeMove } from './move';
 
 
-export default function startSocketServer(http) {
-  const io = require('socket.io')(http);
+export default function startSocketServer(server) {
+  const io = require('socket.io').listen(server);
 
-  io.on('connection', function(socket) {
+  io.sockets.on('connection', function(socket) {
     const userId = socket.request.sessionID;
     let myGameId;                       // There is one socket for browser window
 

@@ -1,14 +1,20 @@
-const app = require('express')();
-const http = require('http').Server(app);
+import express from 'express';
+const app = express();
+const server = require('http').createServer(app);
 const RedisStore = require('connect-redis')(session);
 import startSocketServer from './socketServer';
 import session from 'express-session';
 import redisClient from './redisClient';
 
-const io = startSocketServer(http);
+const io = startSocketServer(server);
 
 // app.set('trust proxy', 1);
 app.set('port', (process.env.PORT || 3001));
+
+// Express only serves static assets in production
+if (process.env.NODE_ENV === 'production') {
+  app.use(express.static('client/build'));
+}
 
 // TODO: production-ready session store
 //  See https://github.com/expressjs/session#compatible-session-stores
@@ -48,16 +54,7 @@ app.get('/api/session', function (req, res) {
   res.send();
 });
 
-// TODO: api? do we need this or can we just rely on sockets?
-//  maybe for initial load of game?
-// app.get('/api/game/:gameId', function (req, res) {
-//   const MOCK_RESPONSE = {
-//     gameId: 'test123'
-//   };
-// 	res.json(MOCK_RESPONSE);
-// });
-
 const port = app.get('port');
-http.listen(port, () => {
+server.listen(port, () => {
  	console.log('Example app listening on port ' + port);
 });

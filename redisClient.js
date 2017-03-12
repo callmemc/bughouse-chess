@@ -10,7 +10,11 @@ import {playerOptions} from './utils';
 // https://github.com/NodeRedis/node_redis#promises
 bluebird.promisifyAll(redis.RedisClient.prototype);
 
-const client = redis.createClient();
+const client = redis.createClient(process.env.REDIS_URL);
+
+client.on("error", function (err) {
+    console.log("Error " + err);
+});
 
 export default client;
 
@@ -24,8 +28,8 @@ export function createGame(gameId) {
       "pieceReserve0", initialPieceReserve,
       "pieceReserve1", initialPieceReserve,
       "players", initialPlayers
-    ])
-    .catch(/*TODO*/);
+    ]);
+    // .catch(/*TODO*/);
 }
 
 export function updateGame(gameId, boardNum, fen, pieceReserve) {
