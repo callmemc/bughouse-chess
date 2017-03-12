@@ -12,6 +12,8 @@ const squareTarget = {
     const draggedPiece = item.piece;
     const targetPiece = props.piece;
 
+    // TODO: Only allow drop if one of valid moves
+
     // If dropping from piece reserve, do not allow user to drop
     //  piece on a non-empty square, or drop a pawn on the first or last rank
     if (!item.square) {

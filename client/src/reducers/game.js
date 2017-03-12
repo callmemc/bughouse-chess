@@ -4,7 +4,7 @@ import _ from 'lodash-compat';
 
 import Constants from '../constants';
 import { emit } from '../socketClient';
-import { getPlayer/*, isPromotion*/ } from '../components/Chessboard/utils';
+import { getPlayer } from '../components/Chessboard/utils';
 import { GameStatus, getGameStatus } from '../chessUtils';
 
 const initialState = Immutable.fromJS({
@@ -71,7 +71,11 @@ export default function game(state = initialState, action) {
           boardNum: user.board,
           gameId: state.get('gameId')
         });
+
+        // TODO: update on client side as well... this means need client-side
+        //   chessjs object...
         return state;
+        // return updateGame(state, user.board, fen);
       }
 
     // TODO: does this really need to be under a flux action?
@@ -87,7 +91,8 @@ export default function game(state = initialState, action) {
         state = state.setIn(['boards', pieceReserve.boardNum, 'pieceReserve', pieceReserve.color],
           Immutable.fromJS(pieceReserve.result));
       }
-      return state.mergeIn(['boards', boardNum], getUpdatedBoardState(boardNum, fen));
+      // return state.mergeIn(['boards', boardNum], getUpdatedBoardState(boardNum, fen));
+      return updateGame(state, boardNum, fen);
 
     case Constants.LOAD_GAME:
       const { boards, players, gameId } = action;
@@ -110,38 +115,6 @@ export default function game(state = initialState, action) {
 
     default:
       return state;
-  }
-
-  /**
-   *  Board state
-   *
-   *  {
-   *    fen: ...,
-   *    turn: ...,
-   *    status: ...,
-   *    pieceReserve: {
-   *      w: [...],
-   *      b: [...]
-   *    }
-   *  }
-  */
-  function getUpdatedBoardState(boardNum, fen, pieceReserve) {
-    const chess = new chessjs(fen);
-
-    let result = Map({
-      fen: fen,
-      turn: chess.turn(),
-      status: getGameStatus(chess)
-    });
-
-    if (pieceReserve) {
-      if (!Iterable.isIterable(pieceReserve)) {
-        pieceReserve = Immutable.fromJS(pieceReserve);
-      }
-      result = result.set('pieceReserve', pieceReserve);
-    }
-
-    return result;
   }
 }
 
@@ -173,3 +146,41 @@ export function isPromotion(fromSquare, toSquare, state) {
     move.get('from') === fromSquare && move.get('to') === toSquare &&
     move.get('promotion'));
 }
+
+
+
+/**
+  *  Board state
+  *
+  *  {
+  *    fen: ...,
+  *    turn: ...,
+  *    status: ...,
+  *    pieceReserve: {
+  *      w: [...],
+  *      b: [...]
+  *    }
+  *  }
+  */
+function getUpdatedBoardState(boardNum, fen, pieceReserve) {
+  const chess = new chessjs(fen);
+
+  let result = Map({
+    fen: fen,
+    turn: chess.turn(),
+    status: getGameStatus(chess)
+  });
+
+  if (pieceReserve) {
+    if (!Iterable.isIterable(pieceReserve)) {
+      pieceReserve = Immutable.fromJS(pieceReserve);
+    }
+    result = result.set('pieceReserve', pieceReserve);
+  }
+
+  return result;
+}
+
+function updateGame(state, boardNum, fen) {
+    return state.mergeIn(['boards', boardNum], getUpdatedBoardState(boardNum, fen));
+  }
