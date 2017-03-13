@@ -6,6 +6,7 @@ import FlatButton from 'material-ui/FlatButton';
 
 import ChessGame from './components/ChessGame';
 import PromotionDialog from './components/PromotionDialog';
+import VideoChat from './components/VideoChat';
 import * as gameActions from './actions/game';
 import { getOpposingColor, getOtherBoard } from './components/Chessboard/utils';
 import { getUser } from './reducers/game';
@@ -33,27 +34,30 @@ class Game extends Component {
 
       return (
         <div className="Game">
-          <div className="Game--user">
-            <ChessGame
-              actions={actions}
-              board={game.getIn(['boards', userBoard])}
-              boardNum={userBoard}
-              isUserBoard={true}
-              moves={moves}
-              players={players.get(userBoard)}
-              userColor={userColor} />
-          </div>
+          <div className="Game__boards">
+            <div className="Game--user">
+              <ChessGame
+                actions={actions}
+                board={game.getIn(['boards', userBoard])}
+                boardNum={userBoard}
+                isUserBoard={true}
+                moves={moves}
+                players={players.get(userBoard)}
+                userColor={userColor} />
+            </div>
 
-          <div className="Game--other">
-            <ChessGame
-              actions={actions}
-              board={game.getIn(['boards', otherBoard])}
-              boardNum={otherBoard}
-              players={players.get(otherBoard)}
-              userColor={getOpposingColor(userColor)} />
+            <div className="Game--other">
+              <ChessGame
+                actions={actions}
+                board={game.getIn(['boards', otherBoard])}
+                boardNum={otherBoard}
+                players={players.get(otherBoard)}
+                userColor={getOpposingColor(userColor)} />
+            </div>
           </div>
-
           {this.renderPromotionDialog()}
+
+          <VideoChat />
         </div>
       );
     } else {

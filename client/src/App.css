@@ -12,7 +12,9 @@
 }
 
 .Game {
-  display: flex;
+  &__boards {
+    display: flex;
+  }
 
   &--other {
     pointer-events: none;
