@@ -55,6 +55,7 @@ class ChessGame extends Component {
             status={board.get('status')}
             turn={board.get('turn')}
             userColor={userColor} />
+          {this._renderDragLayer()}
         </div>
       );
     } else {
@@ -64,11 +65,10 @@ class ChessGame extends Component {
     }
   }
 
-  // This isn't working for some reason...
   _renderDragLayer() {
-    if (this.props.isUserBoard) {
+    if (this.props.isUserBoard && this.props.activePiece) {
       return <PieceDragLayer
-          piece="K" />;
+          piece={this.props.activePiece} />;
     }
   }
 }

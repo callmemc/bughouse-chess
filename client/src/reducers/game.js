@@ -13,6 +13,7 @@ const initialState = Immutable.fromJS({
   userId: undefined,          // If undefined, user is a spectator
   gameId: undefined,          // Id of game game being watched
   activeSquare: undefined,    // Square for piece currently being dragged
+  activePiece: undefined,
   moves: undefined,           // Also possible moves based on activeSquare
   activeTarget: undefined     // Promotion is active
 });
@@ -21,7 +22,7 @@ export default function game(state = initialState, action) {
   let user;
   switch (action.type) {
     case Constants.BEGIN_DRAG:
-      const { square } = action;
+      const { piece, square } = action;
       user = getUser(state);
 
       // TODO: selector for fen, or store chessjs in memory
@@ -30,6 +31,7 @@ export default function game(state = initialState, action) {
 
       state = state.merge({
         activeSquare: square,
+        activePiece: square && piece,
         moves: Immutable.fromJS(moves)
       });
       return state;

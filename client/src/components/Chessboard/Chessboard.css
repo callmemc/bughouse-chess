@@ -62,18 +62,15 @@
 }
 
 .Piece {
-    color: black;
-    font-family: 'Smart Regular';
-    font-size: 34px;
     margin: auto;
     cursor: pointer;
 
     &--dragging {
-        color: #aaa;
+        /* ? */
     }
 
-    &.black {
-        color: black;
+    &__image {
+        width: 40px;
     }
 }
 
@@ -83,9 +80,6 @@
     z-index: 100;
     left: 0;
     top: 0;
-    width: 100%;
-    height: 100%;
-    background-color: white;
 }
 
 .Sidebar {
@@ -137,15 +131,4 @@
 
 .Promotion {
     display: flex;
-}
-
-@font-face {
-    font-family: 'Smart Regular';
-    src: url('../../fonts/smart-regular.eot');
-    src: url('../../fonts/smart-regular.eot?#iefix') format('embedded-opentype'),
-        url('../../fonts/smart-regular.woff2') format('woff2'),
-        url('../../fonts/smart-regular.woff') format('woff'),
-        url('../../fonts/smart-regular.ttf') format('truetype');
-    font-weight: normal;
-    font-style: normal;
 }

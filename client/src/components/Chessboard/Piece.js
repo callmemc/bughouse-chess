@@ -1,15 +1,18 @@
 import React, { PropTypes, Component } from 'react';
 import { DragSource } from 'react-dnd';
 import cx from 'classnames';
-import { getSmartFontPiece, getPieceColor } from './utils';
+import { getPieceColor } from './utils';
 import { ItemTypes } from '../../constants/dndTypes';
+import PieceImage from './PieceImage';
+import { getEmptyImage } from 'react-dnd-html5-backend';
 
 // Specifies the drag source contract.
 const pieceSource = {
   beginDrag: (props) => {
     if (props.square) {
       props.beginDrag({
-        square: props.square
+        square: props.square,
+        piece: props.piece
       });
     }
     // Return the data describing the dragged item
@@ -37,6 +40,7 @@ const pieceSource = {
 function collect(connect, monitor) {
   return {
     canDrag: monitor.isDragging(),
+    connectDragPreview: connect.dragPreview(),
     connectDragSource: connect.dragSource(),
     isDragging: monitor.isDragging()
   };
@@ -53,6 +57,14 @@ class Piece extends Component {
     isDragging: PropTypes.bool.isRequired
   };
 
+  componentDidMount() {
+      // Use empty image as a drag preview so browsers don't draw it
+      // and we can draw whatever we want on the custom drag layer instead.
+      if (this.props.square) {
+        this.props.connectDragPreview(getEmptyImage());
+      }
+  }
+
   render() {
     const { isDragging, connectDragSource } = this.props;
 
@@ -64,10 +76,18 @@ class Piece extends Component {
             "Piece--dragging": isDragging
           })}
           style={{ opacity }}>
-          {getSmartFontPiece(this.props.piece)}
+          {this._getImg()}
         </div>
       )
     );
+  }
+
+  _getImg() {
+    const { piece } = this.props;
+    if (piece !== '-') {
+      return <PieceImage
+        piece={piece} />;
+    }
   }
 }
 

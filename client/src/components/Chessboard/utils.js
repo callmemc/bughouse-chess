@@ -2,30 +2,6 @@ import _ from 'lodash-compat';
 import chessjs from 'chess.js';
 const chess = chessjs();
 
-const ChessPieces = {
-  // key: piece from FEN, value: piece from Smart Regular chess font
-  // white pieces
-  'K': 'F',
-  'Q': 'E',
-  'R': 'D',
-  'B': 'C',
-  'N': 'B',
-  'P': 'A',
-  // black pieces
-  'k': 'f',
-  'q': 'e',
-  'r': 'd',
-  'b': 'c',
-  'n': 'b',
-  'p': 'a',
-  // empty square
-  '-': undefined
-};
-
-export function getSmartFontPiece(fenPiece) {
-  return ChessPieces[fenPiece];
-}
-
 export function getChessJsPiece(piece, color) {
   return color === chess.WHITE ? piece.toUpperCase() : piece;
 }

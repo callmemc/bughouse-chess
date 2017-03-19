@@ -4,7 +4,7 @@ import { List } from 'immutable';
 import { connect } from 'react-redux';
 
 import { makeMove } from '../actions/game';
-import { getSmartFontPiece } from './Chessboard/utils';
+import PieceImage from './Chessboard/PieceImage';
 
 class PromotionDialog extends Component {
   static propTypes = {
@@ -19,8 +19,7 @@ class PromotionDialog extends Component {
             <div key={move.get('promotion')}
               className="Piece"
               onClick={() => this.handleClick(move.get('promotion'))}>
-              {/* TODO: this piece should be own component */ }
-              {getSmartFontPiece(move.get('promotion'))}
+              <PieceImage piece={move.get('promotion')} />
             </div>
           )}
         </div>

@@ -38,6 +38,7 @@ class Game extends Component {
             <div className="Game--user">
               <ChessGame
                 actions={actions}
+                activePiece={game.get('activePiece')}
                 board={game.getIn(['boards', userBoard])}
                 boardNum={userBoard}
                 isUserBoard={true}
@@ -57,7 +58,7 @@ class Game extends Component {
           </div>
           {this.renderPromotionDialog()}
 
-          <VideoChat />
+          {/*<VideoChat />*/}
         </div>
       );
     } else {

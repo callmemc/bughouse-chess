@@ -1,7 +1,7 @@
 import React, { PropTypes, Component } from 'react';
 import { DragLayer } from 'react-dnd';
-import { getSmartFontPiece } from './utils';
 import { ItemTypes } from '../../constants/dndTypes';
+import PieceImage from './PieceImage';
 
 class PieceDragLayer extends Component {
   static propTypes = {
@@ -16,9 +16,7 @@ class PieceDragLayer extends Component {
     return (
       <div className="PieceDragLayer">
         <div style={this._getItemStyles()}>
-          <div className="Piece">
-            {getSmartFontPiece(this.props.piece)}
-          </div>
+          <PieceImage piece={this.props.piece} />
         </div>
       </div>
     );
